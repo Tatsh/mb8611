@@ -1163,7 +1163,22 @@ files = [
     {file = "wrapt-1.15.0.tar.gz", hash = "sha256:d06730c6aed78cee4126234cf2d071e01b44b915e725a6cb439a879ec9754a3a"},
 ]
 
+[[package]]
+name = "yapf"
+version = "0.33.0"
+description = "A formatter for Python code."
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "yapf-0.33.0-py2.py3-none-any.whl", hash = "sha256:4c2b59bd5ffe46f3a7da48df87596877189148226ce267c16e8b44240e51578d"},
+    {file = "yapf-0.33.0.tar.gz", hash = "sha256:da62bdfea3df3673553351e6246abed26d9fe6780e548a5af9e70f6d2b4f5b9a"},
+]
+
+[package.dependencies]
+tomli = ">=2.0.1"
+
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4"
-content-hash = "6190999d52ee1ad2d050db12ac0334b27a769e31ea8e6a111d9538f8b4dcd183"
+content-hash = "888b6e3b16424ba9d37b5a3472d4d05ecc8f0ac336b846c897c1a937a9465758"

@@ -1,11 +1,15 @@
 """Utility functions."""
+from datetime import datetime
 from types import FrameType
+import hmac
 import logging
+import math
 import sys
 
 from loguru import logger
 
 __all__ = ('setup_logging',)
+
 
 class InterceptHandler(logging.Handler):  # pragma: no cover
     """Intercept handler taken from Loguru's documentation."""
@@ -41,3 +45,14 @@ def setup_logging(debug: bool | None = False) -> None:
             level='INFO',
             sink=sys.stderr,
         ),))
+
+
+def make_soap_action_uri(action: str) -> str:
+    return f'"http://purenetworks.com/HNAP1/{action}"'
+
+
+def make_hnap_auth(action: str, private_key: str = 'withoutloginkey') -> str:
+    current_time = str(math.floor(datetime.now().timestamp()) % 2000000000000)
+    auth = hmac.new(private_key.encode(), (current_time + make_soap_action_uri((action))).encode(),
+                    'md5')
+    return f'{auth.hexdigest().upper()} {current_time}'

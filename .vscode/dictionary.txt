@@ -16,6 +16,8 @@ colenabled
 colorder
 colwidth
 concat
+hnap
+moto
 contextlib
 contextmanager
 cookiesfrombrowser
@@ -26,6 +28,7 @@ distutils
 docstrings
 ecda
 epub
+hnaps
 excinfo
 execfile
 flabel

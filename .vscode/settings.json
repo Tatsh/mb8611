@@ -41,5 +41,6 @@
   "python.languageServer": "Pylance",
   "python.linting.flake8Enabled": false,
   "python.linting.pylintEnabled": true,
-  "yaml.format.printWidth": 100
+  "yaml.format.printWidth": 100,
+  "python.linting.enabled": true
 }
