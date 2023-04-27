@@ -1,5 +1,5 @@
 # pylint: disable=invalid-name
-from typing import Iterator, Literal, Sequence, TypedDict
+from typing import Literal, TypedDict
 
 from typing_extensions import NotRequired
 
