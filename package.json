@@ -2,23 +2,23 @@
   "contributors": [
     "Andrew Udvare <audvare@gmail.com>"
   ],
-  "license": "MIT",
-  "name": "mb8611-cli",
-  "repository": "git@github.com:Tatsh/mb8611-cli.git",
-  "scripts": {
-    "check-formatting": "prettier -c './**/*.cfg' './**/*.ini' './**/*.md' './**/*.toml' './**/*.yml' ./.prettierrc ./.style.yapf && isort . --check && yapf -rd mb8611-cli .stubs test",
-    "check-spelling": "cspell --no-progress './**/*'  './**/.*'",
-    "format": "prettier -w './**/*.cfg' './**/*.ini' './**/*.md' './**/*.toml' './**/*.yml' ./.prettierrc ./.style.yapf && isort . && yapf -ri mb8611-cli .stubs test",
-    "install-python-deps": "python -m pip install --upgrade pip && pip install poetry && poetry install && pip install -e . && pip install mypy pylint pylint-quotes pytest pytest-cov coveralls pytest-mock types-requests toml yapf",
-    "mypy": "mypy .",
-    "pylint": "pylint mb8611-cli",
-    "qa": "yarn mypy && yarn pylint && yarn check-spelling && yarn check-formatting"
-  },
-  "version": "0.0.1",
   "devDependencies": {
     "cspell": "^6.31.1",
     "prettier": "^2.8.8",
     "prettier-plugin-ini": "^1.1.0",
     "prettier-plugin-toml": "^0.3.1"
-  }
+  },
+  "license": "MIT",
+  "name": "mb8611-cli",
+  "repository": "git@github.com:Tatsh/mb8611-cli.git",
+  "scripts": {
+    "check-formatting": "prettier -c './**/*.cfg' './**/*.ini' './**/*.md' './**/*.toml' './**/*.yml' ./.prettierrc ./.style.yapf && isort . --check && yapf -rd mb8611 .stubs test",
+    "check-spelling": "cspell --no-progress './**/*'  './**/.*'",
+    "format": "prettier -w './**/*.cfg' './**/*.ini' './**/*.md' './**/*.toml' './**/*.yml' ./.prettierrc ./.style.yapf && isort . && yapf -ri mb8611 .stubs test",
+    "install-python-deps": "python -m pip install --upgrade pip && pip install poetry && poetry install && pip install -e . && pip install mypy pylint pylint-quotes pytest pytest-cov coveralls pytest-mock types-requests toml yapf",
+    "mypy": "mypy mb8611",
+    "pylint": "pylint mb8611",
+    "qa": "yarn mypy && yarn pylint && yarn check-spelling && yarn check-formatting"
+  },
+  "version": "0.0.1"
 }
