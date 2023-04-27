@@ -1,0 +1,9 @@
+/.coverage
+/.directory
+/.pytest_cache/
+/MANIFEST
+/build/
+/dist/
+/htmlcov/
+/node_modules/
+/yarn-error.log
