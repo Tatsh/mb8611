@@ -1,11 +1,11 @@
 """Utility functions."""
 from datetime import datetime
 from types import FrameType
+from typing import Iterator, Sequence
 import hmac
 import logging
 import math
 import sys
-from typing import Iterator, Sequence
 
 from loguru import logger
 
