@@ -50,11 +50,11 @@ def main(host: str, password: str, username: str = 'admin', debug: bool = False)
     public_key = resp['LoginResponse']['PublicKey']
     challenge = resp['LoginResponse']['Challenge']
     if 'Cookie' in resp['LoginResponse']:
-        session.cookies.set('uid', resp['LoginResponse']['Cookie'])
+        session.cookies.set('uid', resp['LoginResponse']['Cookie'])  # type: ignore[no-untyped-call]
     private_key = hmac.new((public_key + password).encode(), challenge.encode(),
                            'md5').hexdigest().upper()
-    session.cookies.set('PrivateKey', private_key, path='/')
-    session.cookies.set('Secure', '')
+    session.cookies.set('PrivateKey', private_key, path='/')  # type: ignore[no-untyped-call]
+    session.cookies.set('Secure', '')  # type: ignore[no-untyped-call]
     r = session.post(
         hnap1_endpoint,
         headers={
