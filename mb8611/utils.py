@@ -59,5 +59,5 @@ def make_hnap_auth(action: str, private_key: str = 'withoutloginkey') -> str:
     return f'{auth.hexdigest().upper()} {current_time}'
 
 
-def parse_table_str(s: str, row_delimiter: str = '|+|') -> Iterator[Sequence[str]]:
-    yield from (r.split('^') for r in s.split(row_delimiter))
+def parse_table_str(table_str: str, row_delimiter: str = '|+|') -> Iterator[Sequence[str]]:
+    yield from (r.split('^') for r in table_str.split(row_delimiter))
