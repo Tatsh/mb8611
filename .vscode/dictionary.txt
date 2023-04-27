@@ -11,13 +11,12 @@ basestring
 bootloader
 builtins
 classmethod
+cli's
 cmdclass
 colenabled
 colorder
 colwidth
 concat
-hnap
-moto
 contextlib
 contextmanager
 cookiesfrombrowser
@@ -27,8 +26,8 @@ dets
 distutils
 docstrings
 ecda
+endregion
 epub
-hnaps
 excinfo
 execfile
 flabel
@@ -36,6 +35,8 @@ fstr
 fullrows
 genindex
 getslice
+hnap
+hnaps
 hsplit
 htmlcov
 idiv
@@ -45,6 +46,7 @@ inlinevar
 isort
 itertools
 khtml
+ksym
 kwallet
 labelsize
 levelname
@@ -54,6 +56,7 @@ lunchy
 maxdepth
 metaclass
 modindex
+moto
 mpegts
 msvs
 multirpc
@@ -87,6 +90,7 @@ rdiv
 referer
 regexes
 reqtimeout
+rescan
 restrictfilenames
 ropeproject
 rstcheck
@@ -107,6 +111,7 @@ standarderror
 status_forcelist
 subclassing
 subtitleslangs
+symb
 tablefmt
 tadd
 tatsh
@@ -126,6 +131,7 @@ valign
 virtualenvs
 vsplit
 webui
+withoutloginkey
 writeautomaticsub
 writeinfojson
 writesubtitles
