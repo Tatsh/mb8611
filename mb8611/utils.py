@@ -5,10 +5,11 @@ import hmac
 import logging
 import math
 import sys
+from typing import Iterator, Sequence
 
 from loguru import logger
 
-__all__ = ('setup_logging',)
+__all__ = ('make_hnap_auth', 'make_soap_action_uri', 'parse_table_str', 'setup_logging')
 
 
 class InterceptHandler(logging.Handler):  # pragma: no cover
@@ -56,3 +57,7 @@ def make_hnap_auth(action: str, private_key: str = 'withoutloginkey') -> str:
     auth = hmac.new(private_key.encode(), (current_time + make_soap_action_uri((action))).encode(),
                     'md5')
     return f'{auth.hexdigest().upper()} {current_time}'
+
+
+def parse_table_str(s: str, row_delimiter: str = '|+|') -> Iterator[Sequence[str]]:
+    yield from (r.split('^') for r in s.split(row_delimiter))
