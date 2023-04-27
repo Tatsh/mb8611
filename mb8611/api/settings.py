@@ -37,7 +37,8 @@ class GetNetworkModeSettingsPayload(TypedDict):
 
 
 class _SetStatusSecuritySettings(TypedDict):
-    # Username and passwords here must be AES-128 encrypted
+    # Username and passwords here must be AES-128 encrypted. The key is the PrivateKey assigned at
+    # login.
     MotoUsername: str
     MotoPassword: str
     MotoNewUsername: str

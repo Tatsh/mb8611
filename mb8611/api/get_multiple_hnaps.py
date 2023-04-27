@@ -21,9 +21,6 @@ class _GetMultipleHNAPsPayloadGetMultipleHNAPs(TypedDict, total=False):
 
 
 class GetMultipleHNAPsPayload(TypedDict):
-    """
-    Pass header: `SOAPACTION: "http://purenetworks.com/HNAP1/GetMultipleHNAPs"`
-    """
     GetMultipleHNAPs: _GetMultipleHNAPsPayloadGetMultipleHNAPs
 
 
@@ -73,10 +70,6 @@ class _GetMotoStatusConnectionInfoResponse(TypedDict):
     GetMotoStatusConnectionInfoResult: str
     MotoConnNetworkAccess: str
     MotoConnSystemUpTime: str
-
-
-def parse_table_str(s: str, row_delimiter: str = '|+|') -> Iterator[Sequence[str]]:
-    yield from (r.split('^') for r in s.split(row_delimiter))
 
 
 class _GetMotoStatusDownstreamChannelInfoResponse(TypedDict):
@@ -143,7 +136,8 @@ class _GetMotoStatusSecXXXResponse(XXXResponse, TypedDict):
 
 class _GetMotoStatusSecAccountResponse(TypedDict):
     GetMotoStatusSecAccountResult: str
-    # All values here are AES-128 encrypted
+    # All values here are AES-128 encrypted. The key is the PrivateKey assigned at
+    # login.
     CurrentLogin: str
     CurrentNameAdmin: str
     CurrentNameUser: str
