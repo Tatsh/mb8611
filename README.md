@@ -25,6 +25,34 @@ Options:
 
 ## Library usage
 
+Refer to `mb8611.api` files for fields. Almost every field type is a string.
+
+### Actions
+
+- `GetHomeAddress`
+- `GetHomeConnection`
+- `GetMotoLagStatus`
+- `GetMotoStatusConnectionInfo`
+- `GetMotoStatusDownstreamChannelInfo`
+- `GetMotoStatusLog`
+- `GetMotoStatusLogXXX`
+- `GetMotoStatusSecAccount`
+- `GetMotoStatusSecXXX`
+- `GetMotoStatusSoftware`
+- `GetMotoStatusStartupSequence`
+- `GetMotoStatusUpstreamChannelInfo`
+- `GetNetworkModeSettings`
+
+Some actions require a specific payload:
+
+- `Login` - see [`LoginPayload`](mb8611/api/login.py)
+- `SetMotoLagStatus` - see [`SetMotoLagStatusPayload`](mb8611/api/settings.py)
+- `SetMotoStatusDSTargetFreq` - see [`SetMotoStatusDSTargetFreqPayload`](mb8611/api/settings.py)
+- `SetStatusLogSettings` - see [`ClearLogPayload`](mb8611/api/settings.py)
+- `SetStatusSecuritySettings` - see [`RebootPayload`](mb8611/api/settings.py)
+
+### Example
+
 ```python
 import pprint
 
@@ -34,15 +62,18 @@ from mb8611.api import GetHomeAddressResponse
 with Client(the_password) as client:
     addr: GetHomeAddressResponse = client.call_hnap('GetHomeAddress')
     # Fully typed dictionary
-    assert addr['GetHomeAddressResult'] == 'OK'
+    assert addr['GetHomeAddressResponse']['GetHomeAddressResult'] == 'OK'
     pprint.pprint(addr)
 ```
 
+`Client` implements a context manager. Calling `Client.login` unnecessary when using
+it with the `with` statement.
+
 ```python
 {'GetHomeAddressResponse': {'GetHomeAddressResult': 'OK',
-                            'MotoHomeIpAddress': '...',
-                            'MotoHomeIpv6Address': '',
-                            'MotoHomeMacAddress': '...',
+                        - `MotoHomeIpAddress': '...`
+                        - `MotoHomeIpv6Address': '`
+                        - `MotoHomeMacAddress': '...`
                             'MotoHomeSfVer': '8611-19.2.18'}}
 ```
 
