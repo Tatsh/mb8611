@@ -4,8 +4,8 @@ from typing import Iterator, Sequence
 import hmac
 import logging
 import math
-import time
 import sys
+import time
 
 from loguru import logger
 

@@ -54,7 +54,7 @@ def main(action: str,
     # certificate on the device.
     warnings.filterwarnings(action='ignore', category=InsecureRequestWarning)
     setup_logging(debug)
-    with Client(host, password, username) as client:
+    with Client(password, host, username) as client:
         resp: dict[str, Any]
         if action == 'clear-log':
             resp = client.call_hnap(

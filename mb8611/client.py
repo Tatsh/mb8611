@@ -1,14 +1,13 @@
 """Client class."""
-import hmac
 from inspect import Traceback
-from typing import Any, Collection, Type
+from typing import Any, Collection, Type, cast
+import hmac
 
 from loguru import logger
 from requests import Session
 
-from .api.get_multiple_hnaps import GetMultipleHNAPsResponse
-
 from .api import LoginResponse
+from .api.get_multiple_hnaps import GetMultipleHNAPsResponse
 from .constants import MUST_BE_CALLED_FROM_MULTIPLE, SHARED_HEADERS
 from .utils import make_hnap_auth, make_soap_action_uri
 
@@ -81,7 +80,7 @@ class Client:
         headers = dict(HNAP_AUTH=make_hnap_auth(action, self.private_key),
                        SOAPACTION=make_soap_action_uri(action))
         logger.debug(f'Headers: {headers}')
-        logger.debug(f'Cookies: {self.session.cookies.get_dict()}')
+        logger.debug(f'Cookies: {self.session.cookies.get_dict()}')  # type: ignore[no-untyped-call]
         logger.debug(f'Payload: {payload}')
         r = self.session.post(self.hnap1_endpoint, headers=headers, json=payload, verify=False)
         r.raise_for_status()
@@ -98,12 +97,14 @@ class Client:
             raise ValueError(
                 'Actions list should have at least 2 elements. Use call_hnap() for a single action.'
             )
-        return self.call_hnap('GetMultipleHNAPs',
-                              dict(GetMultipleHNAPs={action: ''
-                                                     for action in actions}),
-                              check=check)
+        return cast(
+            GetMultipleHNAPsResponse,
+            self.call_hnap('GetMultipleHNAPs',
+                           dict(GetMultipleHNAPs={action: ''
+                                                  for action in actions}),
+                           check=check))
 
-    def logout(self) -> None:
+    def logout(self) -> Any:
         return self.call_hnap('Logout')
 
     def __enter__(self) -> 'Client':

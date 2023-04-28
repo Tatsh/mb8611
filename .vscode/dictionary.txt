@@ -17,6 +17,7 @@ colenabled
 colorder
 colwidth
 concat
+conninfo
 contextlib
 contextmanager
 cookiesfrombrowser
@@ -104,6 +105,7 @@ setslice
 setuptools
 shortcode
 sindex
+soapaction
 speedintitle
 speedlistdl
 speedlistul
