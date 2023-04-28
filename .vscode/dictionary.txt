@@ -78,6 +78,7 @@ pipx
 plabel
 popen
 postprocessors
+pprint
 prss
 pstate
 ptrackers

@@ -3,6 +3,10 @@ from typing import Literal, TypedDict
 
 from typing_extensions import NotRequired
 
+__all__ = ('GetNetworkModeSettingsPayload', 'GetNetworkModeSettingsResponse',
+           'SetMotoLagStatusPayload', 'SetMotoStatusDSTargetFreqPayload',
+           'SetStatusSecuritySettingsPayload')
+
 
 class _SetMotoStatusDSTargetFreq(TypedDict):
     MotoStatusConnectionAction: str
@@ -15,20 +19,22 @@ class _SetMotoLagStatus(TypedDict):
 
 
 class SetMotoLagStatusPayload(TypedDict):
+    """Not used in cable-modem only models."""
     SetMotoLagStatus: _SetMotoLagStatus
 
 
 class SetMotoStatusDSTargetFreqPayload(TypedDict):
+    """Not used in cable-modem only models."""
     SetMotoStatusDSTargetFreq: _SetMotoStatusDSTargetFreq
 
 
 class _GetNetworkModeSettingsResponse(TypedDict):
-    """Not used in cable-modem only models."""
     global_network_mode: Literal['router', 'bridge']
     GetNetworkModeSettingsResult: str
 
 
 class GetNetworkModeSettingsResponse(TypedDict):
+    """Not used in cable-modem only models."""
     GetNetworkModeSettingsResponse: _GetNetworkModeSettingsResponse
 
 
@@ -49,3 +55,28 @@ class _SetStatusSecuritySettings(TypedDict):
 
 class SetStatusSecuritySettingsPayload(TypedDict):
     SetStatusSecuritySettings: _SetStatusSecuritySettings
+
+
+class _RebootSetStatusSecuritySettings(TypedDict):
+    MotoStatusSecXXX: Literal['XXX']
+
+
+class RebootPayload(TypedDict):
+    SetStatusSecuritySettings: _RebootSetStatusSecuritySettings
+
+
+class _SetStatusLogSettings(TypedDict):
+    MotoStatusLogAction: Literal['1']
+    MotoStatusLogXXX: Literal['XXX']
+
+
+class ClearLogPayload(TypedDict):
+    SetStatusLogSettings: _SetStatusLogSettings
+
+
+class _SetStatusLogSettingsResponse(TypedDict):
+    SetStatusLogSettingsResult: Literal['OK', 'UN-AUTH']
+
+
+class SetStatusLogSettingsResponse(TypedDict):
+    SetStatusLogSettingsResponse: _SetStatusLogSettingsResponse

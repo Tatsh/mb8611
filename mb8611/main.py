@@ -1,94 +1,89 @@
 """Main command."""
-import hmac
+from typing import Any
+import json
 import warnings
 
 from urllib3.exceptions import InsecureRequestWarning
 import click
-import requests
 
-from .api.get_multiple_hnaps import GetMultipleHNAPsResponse
-from .api.login import LoginResponse
-from .constants import SHARED_HEADERS
-from .utils import make_hnap_auth, make_soap_action_uri, setup_logging
+from .client import Client
+from .constants import ROW_DELIMITERS, TABLE_KEYS
+from .utils import parse_table_str, setup_logging
+
+ACTION_ALIAS_MAPPING = {
+    'addr': 'GetHomeAddress',
+    'address': 'GetHomeAddress',
+    'clear-log': 'SetStatusLogSettings',
+    'conn': 'GetHomeConnection',
+    'connection': 'GetHomeConnection',
+    'connection-info': 'GetMotoStatusConnectionInfo',
+    'conninfo': 'GetMotoStatusConnectionInfo',
+    'down': 'GetMotoStatusDownstreamChannelInfo',
+    'downstream': 'GetMotoStatusDownstreamChannelInfo',
+    'lag': 'GetMotoLagStatus',
+    'lag-status': 'GetMotoLagStatus',
+    'log': 'GetMotoStatusLog',
+    'reboot': 'SetStatusSecuritySettings',
+    'software': 'GetMotoStatusSoftware',
+    'software-status': 'GetMotoStatusSoftware',
+    'startup': 'GetMotoStatusStartupSequence',
+    'startup-sequence': 'GetMotoStatusStartupSequence',
+    'up': 'GetMotoStatusUpstreamChannelInfo',
+    'upstream': 'GetMotoStatusUpstreamChannelInfo',
+}
 
 
 @click.command()
-@click.option('-H', '--host', required=True)
-@click.option('-d', '--debug', is_flag=True, help='Enable debug level logging')
-@click.option('-u', '--username', default='admin')
-@click.option('-p', '--password', required=True)
-def main(host: str, password: str, username: str = 'admin', debug: bool = False) -> None:
+@click.argument('action', type=click.Choice(list(ACTION_ALIAS_MAPPING.keys())))
+@click.option('-H', '--host', help='Host to connect to.', default='192.168.100.1')
+@click.option('-d', '--debug', is_flag=True, help='Enable debug level logging.')
+@click.option('-j',
+              '--output-json',
+              is_flag=True,
+              help='Only output JSON. Encoded lists (tables) will still be parsed.')
+@click.option('-p', '--password', required=True, help='Administrator password.')
+@click.option('-u', '--username', default='admin', help='Administrator username.')
+def main(action: str,
+         host: str,
+         password: str,
+         debug: bool = False,
+         output_json: bool = False,
+         username: str = 'admin') -> None:
+    """Main CLI."""
     # Unfortunately, we have to ignore certificate warnings as there is no way to install a good
     # certificate on the device.
     warnings.filterwarnings(action='ignore', category=InsecureRequestWarning)
     setup_logging(debug)
-    session = requests.Session()
-    session.headers.update(SHARED_HEADERS)
-    hnap1_endpoint = f'https://{host}/HNAP1/'
-    #region Login
-    soap_action_uri = make_soap_action_uri('Login')
-    r = session.post(hnap1_endpoint,
-                     headers={
-                         'HNAP_AUTH': make_hnap_auth('Login'),
-                         'Referer': f'https://{host}/Login.html',
-                         'SOAPAction': soap_action_uri
-                     },
-                     json=dict(Login=dict(Action='request',
-                                          Username=username,
-                                          LoginPassword='',
-                                          Captcha='',
-                                          PrivateLogin='LoginPassword')),
-                     verify=False)
-    r.raise_for_status()
-    resp: LoginResponse = r.json()
-    if resp['LoginResponse']['LoginResult'] == 'FAILED':
-        click.echo('The modem interface is most likely locked due to failed login attempts. Wait '
-                   'at least five minutes before attempting again.')
-        raise click.Abort()
-    assert 'PublicKey' in resp['LoginResponse']
-    assert 'Challenge' in resp['LoginResponse']
-    public_key = resp['LoginResponse']['PublicKey']
-    challenge = resp['LoginResponse']['Challenge']
-    if 'Cookie' in resp['LoginResponse']:
-        session.cookies.set('uid', resp['LoginResponse']['Cookie'])  # type: ignore[no-untyped-call]
-    private_key = hmac.new((public_key + password).encode(), challenge.encode(),
-                           'md5').hexdigest().upper()
-    session.cookies.set('PrivateKey', private_key, path='/')  # type: ignore[no-untyped-call]
-    session.cookies.set('Secure', '')  # type: ignore[no-untyped-call]
-    r = session.post(
-        hnap1_endpoint,
-        headers={
-            'HNAP_AUTH': make_hnap_auth('Login', private_key),
-            'Referer': f'https://{host}/Login.html',
-            'SOAPAction': soap_action_uri
-        },
-        # I have seen Action='login' used for this step but it fails here
-        json=dict(Login=dict(Action='request',
-                             Username=username,
-                             LoginPassword=hmac.new(private_key.encode(), challenge.encode(),
-                                                    'md5').hexdigest().upper(),
-                             Captcha='',
-                             PrivateLogin='LoginPassword')),
-        verify=False)
-    r.raise_for_status()
-    resp = r.json()
-    assert resp['LoginResponse']['LoginResult'] == 'OK'
-    #endregion
-    #region Example API call with GetMultipleHNAPs
-    r = session.post(hnap1_endpoint,
-                     headers={
-                         'HNAP_AUTH': make_hnap_auth('GetMultipleHNAPs', private_key),
-                         'SOAPAction': make_soap_action_uri('GetMultipleHNAPs')
-                     },
-                     json={
-                         'GetMultipleHNAPs': {
-                             'GetMotoStatusSoftware': '',
-                             'GetMotoStatusXXX': ''
-                         },
-                     },
-                     verify=False)
-    r.raise_for_status()
-    multi_hnaps_resp: GetMultipleHNAPsResponse = r.json()
-    assert multi_hnaps_resp['GetMultipleHNAPsResponse']['GetMultipleHNAPsResult'] == 'OK'
-    click.echo(multi_hnaps_resp)
-    #endregion
+    with Client(host, password, username) as client:
+        resp: dict[str, Any]
+        if action == 'clear-log':
+            resp = client.call_hnap(
+                'SetStatusLogSettings',
+                dict(SetStatusLogSettings=dict(MotoStatusLogAction='1', MotoStatusLogXXX='XXX')),
+                check=not output_json)
+        elif action == 'reboot':
+            resp = client.call_hnap('SetStatusSecuritySettings',
+                                    dict(SetStatusSecuritySettings=dict(MotoStatusSecXXX='XXX')),
+                                    check=not output_json)
+        else:
+            resp = client.call_hnap(ACTION_ALIAS_MAPPING[action], check=not output_json)
+        top_key = f'{ACTION_ALIAS_MAPPING[action]}Response'
+        result_key = f'{ACTION_ALIAS_MAPPING[action]}Result'
+        if not output_json:
+            assert resp[top_key][result_key] == 'OK'
+        assert top_key in resp
+        if not output_json:
+            for k, value in sorted(resp[top_key].items()):
+                if k == result_key:
+                    continue
+                if k not in TABLE_KEYS:
+                    click.echo(f'{k}: {value}')
+                else:
+                    click.echo(
+                        list(parse_table_str(value, row_delimiter=ROW_DELIMITERS.get(k, '|+|'))))
+        else:
+            for k, value in resp[top_key].items():
+                if k in TABLE_KEYS:
+                    resp[top_key][k] = list(
+                        parse_table_str(value, row_delimiter=ROW_DELIMITERS.get(k, '|+|')))
+            click.echo(json.dumps(resp[top_key], indent=2))

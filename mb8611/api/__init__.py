@@ -1,11 +1,13 @@
-from .get_multiple_hnaps import GetMultipleHNAPsPayload, GetMultipleHNAPsResponse
-from .log import ClearLogPayload
+from .get_multiple_hnaps import (GetHomeAddressResponse, GetMultipleHNAPsPayload,
+                                 GetMultipleHNAPsResponse)
 from .login import LoginPayload, LoginResponse
-from .settings import (GetNetworkModeSettingsPayload, GetNetworkModeSettingsResponse,
-                       SetMotoLagStatusPayload, SetMotoStatusDSTargetFreqPayload,
+from .settings import (ClearLogPayload, GetNetworkModeSettingsPayload,
+                       GetNetworkModeSettingsResponse, SetMotoLagStatusPayload,
+                       SetMotoStatusDSTargetFreqPayload, SetStatusLogSettingsResponse,
                        SetStatusSecuritySettingsPayload)
 
-__all__ = ('ClearLogPayload', 'GetMultipleHNAPsPayload', 'GetMultipleHNAPsResponse',
-           'GetNetworkModeSettingsPayload', 'GetNetworkModeSettingsResponse', 'LoginPayload',
-           'LoginResponse', 'SetMotoLagStatusPayload', 'SetMotoStatusDSTargetFreqPayload',
-           'SetStatusSecuritySettingsPayload')
+__all__ = ('ClearLogPayload', 'GetHomeAddressResponse', 'GetMultipleHNAPsPayload',
+           'GetMultipleHNAPsResponse', 'GetNetworkModeSettingsPayload',
+           'GetNetworkModeSettingsResponse', 'LoginPayload', 'LoginResponse',
+           'SetMotoLagStatusPayload', 'SetMotoStatusDSTargetFreqPayload',
+           'SetStatusLogSettingsResponse', 'SetStatusSecuritySettingsPayload')

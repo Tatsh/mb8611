@@ -1,10 +1,10 @@
 """Utility functions."""
-from datetime import datetime
 from types import FrameType
 from typing import Iterator, Sequence
 import hmac
 import logging
 import math
+import time
 import sys
 
 from loguru import logger
@@ -49,15 +49,18 @@ def setup_logging(debug: bool | None = False) -> None:
 
 
 def make_soap_action_uri(action: str) -> str:
+    """Returns the SOAP action URI for the given action."""
     return f'"http://purenetworks.com/HNAP1/{action}"'
 
 
 def make_hnap_auth(action: str, private_key: str = 'withoutloginkey') -> str:
-    current_time = str(math.floor(datetime.now().timestamp()) % 2000000000000)
+    """Create the value required for the ``HNAP_AUTH`` header."""
+    current_time = str(math.floor(time.time_ns() / 1000000) % 2000000000000)
     auth = hmac.new(private_key.encode(), (current_time + make_soap_action_uri((action))).encode(),
                     'md5')
     return f'{auth.hexdigest().upper()} {current_time}'
 
 
 def parse_table_str(table_str: str, row_delimiter: str = '|+|') -> Iterator[Sequence[str]]:
+    """Parse a string that represents a table displayed in the UI."""
     yield from (r.split('^') for r in table_str.split(row_delimiter))

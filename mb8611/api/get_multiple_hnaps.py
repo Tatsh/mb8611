@@ -1,4 +1,5 @@
 # pylint: disable=invalid-name
+"""Type information for use with the ``GetMultipleHNAPs`` API."""
 from typing import Literal, TypedDict
 
 from typing_extensions import NotRequired
@@ -24,8 +25,8 @@ class GetMultipleHNAPsPayload(TypedDict):
     GetMultipleHNAPs: _GetMultipleHNAPsPayloadGetMultipleHNAPs
 
 
-class _GetHomeAddressResponse(TypedDict):
-    GetHomeAddressResult: str
+class GetHomeAddressResponse(TypedDict):
+    GetHomeAddressResult: Literal['OK', 'UN-AUTH']
     MotoHomeIpAddress: str
     MotoHomeIpv6Address: str
     MotoHomeMacAddress: str
@@ -146,7 +147,7 @@ class _GetMotoStatusSecAccountResponse(TypedDict):
 
 
 class _GetMultipleHNAPsResponseTop(TypedDict):
-    GetHomeAddressResponse: NotRequired[_GetHomeAddressResponse]
+    GetHomeAddressResponse: NotRequired[GetHomeAddressResponse]
     GetHomeConnectionResponse: NotRequired[_GetHomeConnectionResponse]
     GetMotoLagStatusResponse: NotRequired[_GetMotoLagStatusResponse]
     GetMotoStatusConnectionInfoResponse: NotRequired[_GetMotoStatusConnectionInfoResponse]
@@ -160,7 +161,7 @@ class _GetMultipleHNAPsResponseTop(TypedDict):
     GetMotoStatusStartupSequenceResponse: NotRequired[_GetMotoStatusStartupSequenceResponse]
     GetMotoStatusUpstreamChannelInfoResponse: NotRequired[_GetMotoStatusUpstreamChannelInfoResponse]
     GetMotoStatusXXXResponse: NotRequired[_GetMotoStatusXXXResponse]
-    GetMultipleHNAPsResult: str
+    GetMultipleHNAPsResult: Literal['OK', 'UN-AUTH']
 
 
 class GetMultipleHNAPsResponse(TypedDict):
