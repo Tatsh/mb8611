@@ -71,9 +71,9 @@ it with the `with` statement.
 
 ```python
 {'GetHomeAddressResponse': {'GetHomeAddressResult': 'OK',
-                        - `MotoHomeIpAddress': '...`
-                        - `MotoHomeIpv6Address': '`
-                        - `MotoHomeMacAddress': '...`
+                            'MotoHomeIpAddress': '...',
+                            'MotoHomeIpv6Address': '',
+                            'MotoHomeMacAddress': '...',
                             'MotoHomeSfVer': '8611-19.2.18'}}
 ```
 
