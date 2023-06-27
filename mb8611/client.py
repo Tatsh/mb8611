@@ -17,6 +17,7 @@ class LockedError(Exception):
 
 
 class Client:
+    """Client implementation."""
     def __init__(self, password: str, host: str = '192.168.100.1', username: str = 'admin') -> None:
         self.hnap1_endpoint = f'https://{host}/HNAP1/'
         self.host = host

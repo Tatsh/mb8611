@@ -45,11 +45,11 @@ Refer to `mb8611.api` files for fields. Almost every field type is a string.
 
 Some actions require a specific payload:
 
-- `Login` - see [`LoginPayload`](mb8611/api/login.py)
-- `SetMotoLagStatus` - see [`SetMotoLagStatusPayload`](mb8611/api/settings.py)
-- `SetMotoStatusDSTargetFreq` - see [`SetMotoStatusDSTargetFreqPayload`](mb8611/api/settings.py)
-- `SetStatusLogSettings` - see [`ClearLogPayload`](mb8611/api/settings.py)
-- `SetStatusSecuritySettings` - see [`RebootPayload`](mb8611/api/settings.py)
+- `Login` — [`LoginPayload`](mb8611/api/login.py)
+- `SetMotoLagStatus` — [`SetMotoLagStatusPayload`](mb8611/api/settings.py)
+- `SetMotoStatusDSTargetFreq` — see [`SetMotoStatusDSTargetFreqPayload`](mb8611/api/settings.py)
+- `SetStatusLogSettings` — see [`ClearLogPayload`](mb8611/api/settings.py)
+- `SetStatusSecuritySettings` — see [`RebootPayload`](mb8611/api/settings.py)
 
 ### Example
 
@@ -116,7 +116,7 @@ mb8611 -p ... up -j | jq -r '.MotoConnUpstreamChannel[]|@csv' | tr -d '"' | tabu
 
 ## Known issues
 
-Some actions currently return `'UN-AUTH'` and I have not yet figured out the issue. They always
+Some actions currently return `'UN-AUTH'`. I have not figured out the issue. They always
 work in the browser.
 
 - `clear-log` / `SetStatusLogSettings`
