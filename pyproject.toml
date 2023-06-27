@@ -23,7 +23,7 @@ pylint-quotes = "^0.2.3"
 rope = "^1.8.0"
 toml = "^0.10.2"
 types-requests = "^2.31.0.1"
-yapf = "^0.40.0"
+yapf = "^0.40.1"
 
 [tool.poetry.group.docs]
 optional = true
