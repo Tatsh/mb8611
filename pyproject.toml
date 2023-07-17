@@ -36,7 +36,7 @@ optional = true
 
 [tool.poetry.group.test.dependencies]
 coveralls = "^3.3.1"
-mock = "^5.0.2"
+mock = "^5.1.0"
 pytest = "^7.4.0"
 pytest-mock = "^3.11.1"
 requests-mock = "^1.11.0"
