@@ -29,7 +29,7 @@ yapf = "^0.40.1"
 optional = true
 
 [tool.poetry.group.docs.dependencies]
-sphinx = "^7.2.5"
+sphinx = "^7.2.6"
 
 [tool.poetry.group.test]
 optional = true
