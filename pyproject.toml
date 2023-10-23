@@ -18,7 +18,7 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.6.0"
-pylint = "^3.0.1"
+pylint = "^3.0.2"
 pylint-quotes = "^0.2.3"
 rope = "^1.10.0"
 toml = "^0.10.2"
