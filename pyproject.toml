@@ -22,7 +22,7 @@ pylint = "^3.0.2"
 pylint-quotes = "^0.2.3"
 rope = "^1.10.0"
 toml = "^0.10.2"
-types-requests = "^2.31.0.9"
+types-requests = "^2.31.0.10"
 yapf = "^0.40.2"
 
 [tool.poetry.group.docs]
