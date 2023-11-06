@@ -734,13 +734,13 @@ test = ["fixtures", "mock", "purl", "pytest", "requests-futures", "sphinx", "tes
 
 [[package]]
 name = "rope"
-version = "1.10.0"
+version = "1.11.0"
 description = "a python refactoring library..."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "rope-1.10.0-py3-none-any.whl", hash = "sha256:4e9f06d7296708a8a6518590c49352c99394053d91fde5b1d74c9ffc85c76d5b"},
-    {file = "rope-1.10.0.tar.gz", hash = "sha256:14bfcc7dfea69fa32c53db0667e86e321ef059de555c7f8101a0cb91c8d85a55"},
+    {file = "rope-1.11.0-py3-none-any.whl", hash = "sha256:62c9028353d1f020653bd1b090d659031539842ede6bd65985f86db3d6430932"},
+    {file = "rope-1.11.0.tar.gz", hash = "sha256:ac0cbdcda5a546e1e56c54976df07ea2cb04c806f65459bc213536c5d1bc073e"},
 ]
 
 [package.dependencies]
@@ -1022,4 +1022,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4"
-content-hash = "ec0348ab7a2e83fe0544d9622b7c76a465932615f2cd9e140d0a18f0fce32994"
+content-hash = "5533799b29f6348818a1237c6f8ff197160e402d86a2abf6a291463920bf0050"
