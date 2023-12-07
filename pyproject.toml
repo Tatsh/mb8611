@@ -47,3 +47,27 @@ requires = ["poetry-core"]
 
 [tool.poetry.scripts]
 mb8611 = "mb8611:main"
+
+[tool.cruft]
+skip = [
+  "./*.lock",
+  "./.*_cache",
+  "./.git/hooks/*.sample",
+  "./docs/*.rst",
+  "./tests/*/test_*.py",
+  "./tests/test_*.py",
+  ".git/COMMIT_EDITMSG",
+  ".git/HEAD",
+  ".git/config",
+  ".git/index",
+  ".git/logs/",
+  ".git/refs/",
+  ".vscode/dictionary.txt",
+  "CHANGELOG.md",
+  "LICENSE.txt",
+  "dist/",
+  "htmlcov/",
+  "mb8611/",
+  "man/",
+  "node_modules/"
+]
