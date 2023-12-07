@@ -1,7 +1,5 @@
 # pylint: disable=invalid-name
-from typing import Literal, TypedDict
-
-from typing_extensions import NotRequired
+from typing import Literal, NotRequired, TypedDict
 
 
 class _LoginPayloadLogin(TypedDict):

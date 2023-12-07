@@ -1,8 +1,6 @@
 # pylint: disable=invalid-name
 """Type information for use with the ``GetMultipleHNAPs`` API."""
-from typing import Literal, TypedDict
-
-from typing_extensions import NotRequired
+from typing import Literal, NotRequired, TypedDict
 
 
 class _GetMultipleHNAPsPayloadGetMultipleHNAPs(TypedDict, total=False):

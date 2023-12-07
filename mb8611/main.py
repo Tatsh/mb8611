@@ -1,10 +1,10 @@
 """Main command."""
-from typing import Any
 import json
 import warnings
+from typing import Any
 
-from urllib3.exceptions import InsecureRequestWarning
 import click
+from urllib3.exceptions import InsecureRequestWarning
 
 from .client import Client
 from .constants import ROW_DELIMITERS, TABLE_KEYS

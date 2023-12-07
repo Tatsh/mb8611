@@ -1,15 +1,19 @@
 """Client class."""
-from inspect import Traceback
-from typing import Any, Collection, Type, cast
+import contextlib
 import hmac
+from collections.abc import Collection
+from types import TracebackType
+from typing import TYPE_CHECKING, Any, cast
 
 from loguru import logger
 from requests import Session
 
-from .api import LoginResponse
 from .api.get_multiple_hnaps import GetMultipleHNAPsResponse
 from .constants import MUST_BE_CALLED_FROM_MULTIPLE, SHARED_HEADERS
 from .utils import make_hnap_auth, make_soap_action_uri
+
+if TYPE_CHECKING:
+    from .api import LoginResponse
 
 
 class LockedError(Exception):
@@ -71,10 +75,8 @@ class Client:
     def call_hnap(self, action: str, payload: Any = None, check: bool = True) -> Any:
         # Clear invalid cookie. Chrome interprets this set-cookie header as having a key '' and
         # value 'Secure'. requests.cookies interprets this in the opposite manner.
-        try:
+        with contextlib.suppress(KeyError):
             self.session.cookies.clear(self.host, '/HNAP1', 'Secure')
-        except KeyError:
-            pass
         if action in MUST_BE_CALLED_FROM_MULTIPLE:
             return self.call_multiple_hnaps((action,), check=False)
         logger.debug(f'Calling {action}')
@@ -112,6 +114,6 @@ class Client:
         self.login()
         return self
 
-    def __exit__(self, exc_cls: Type[BaseException], base_exc: BaseException,
-                 traceback: Traceback) -> None:
+    def __exit__(self, exc_cls: type[BaseException] | None, base_exc: BaseException | None,
+                 traceback: TracebackType | None) -> None:
         self.session.get(f'https://{self.host}/Logout.html')

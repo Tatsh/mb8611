@@ -1,13 +1,16 @@
 """Utility functions."""
-from types import FrameType
-from typing import Iterator, Sequence
 import hmac
 import logging
 import math
 import sys
 import time
+from collections.abc import Iterator, Sequence
+from typing import TYPE_CHECKING
 
 from loguru import logger
+
+if TYPE_CHECKING:
+    from types import FrameType
 
 __all__ = ('make_hnap_auth', 'make_soap_action_uri', 'parse_table_str', 'setup_logging')
 
@@ -56,7 +59,7 @@ def make_soap_action_uri(action: str) -> str:
 def make_hnap_auth(action: str, private_key: str = 'withoutloginkey') -> str:
     """Create the value required for the ``HNAP_AUTH`` header."""
     current_time = str(math.floor(time.time_ns() / 1000000) % 2000000000000)
-    auth = hmac.new(private_key.encode(), (current_time + make_soap_action_uri((action))).encode(),
+    auth = hmac.new(private_key.encode(), (current_time + make_soap_action_uri(action)).encode(),
                     'md5')
     return f'{auth.hexdigest().upper()} {current_time}'
 

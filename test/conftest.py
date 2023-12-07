@@ -1,9 +1,9 @@
 """Configuration for Pytest."""
-from typing import NoReturn
 import os
+from typing import NoReturn
 
-from click.testing import CliRunner
 import pytest
+from click.testing import CliRunner
 
 if os.getenv('_PYTEST_RAISE', '0') != '0':  # pragma no cover
 

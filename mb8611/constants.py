@@ -1,5 +1,6 @@
 """Common constants."""
-from typing import Final, Mapping
+from collections.abc import Mapping
+from typing import Final
 
 __all__ = ('SHARED_HEADERS',)
 
@@ -14,10 +15,9 @@ SHARED_HEADERS: Final[Mapping[str, str]] = {
 #: Keys that contain specially encoded lists to be displayed in tables.
 TABLE_KEYS = ('MotoConnDownstreamChannel', 'MotoConnUpstreamChannel', 'MotoStatusLogList')
 #: Actions that do not work without using GetMultipleHNAPs.
-MUST_BE_CALLED_FROM_MULTIPLE: Final[set[str]] = set(
-    ('GetHomeAddress', 'GetHomeConnection', 'GetMotoLagStatus', 'GetMotoStatusConnectionInfo',
+MUST_BE_CALLED_FROM_MULTIPLE: Final[set[str]] = {'GetHomeAddress', 'GetHomeConnection', 'GetMotoLagStatus', 'GetMotoStatusConnectionInfo',
      'GetMotoStatusDownstreamChannelInfo', 'GetMotoStatusLog', 'GetMotoStatusLogXXX',
      'GetMotoStatusSecAccount', 'GetMotoStatusSecXXX', 'GetMotoStatusSoftware',
-     'GetMotoStatusStartupSequence', 'GetMotoStatusUpstreamChannelInfo'))
+     'GetMotoStatusStartupSequence', 'GetMotoStatusUpstreamChannelInfo'}
 #: Delimiters used in encoded table strings, keyed by action.
 ROW_DELIMITERS = dict(MotoStatusLogList='}-{')
