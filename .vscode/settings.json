@@ -1,16 +1,18 @@
 {
   "[python]": {
-    "editor.defaultFormatter": "ms-python.python",
+    "editor.defaultFormatter": "eeyore.yapf",
     "editor.tabSize": 4
   },
   "cSpell.enabled": true,
+  "editor.codeActionsOnSave": { "source.fixAll": "always" },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
   "editor.formatOnType": true,
   "editor.inlayHints.enabled": "offUnlessPressed",
   "editor.insertSpaces": true,
-  "editor.rulers": [101],
+  "editor.rulers": [100],
   "editor.tabSize": 2,
   "editor.wordWrapColumn": 100,
   "eslint.lintTask.enable": true,
@@ -37,10 +39,8 @@
   ],
   "python.analysis.stubPath": ".stubs",
   "python.analysis.typeCheckingMode": "strict",
-  "python.formatting.provider": "yapf",
   "python.languageServer": "Pylance",
-  "python.linting.flake8Enabled": false,
-  "python.linting.pylintEnabled": true,
-  "yaml.format.printWidth": 100,
-  "python.linting.enabled": true
+  "restructuredtext.linter.disabledLinters": ["rstcheck"],
+  "restructuredtext.linter.run": "onSave",
+  "yaml.format.printWidth": 100
 }
