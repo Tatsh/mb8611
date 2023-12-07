@@ -1,8 +1,15 @@
 # MB8611 CLI
 
-CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices.
+[![QA](https://github.com/Tatsh/mb8611-cli/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/mb8611-cli/actions/workflows/qa.yml)
+[![Tests](https://github.com/Tatsh/mb8611-cli/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/mb8611-cli/actions/workflows/tests.yml)
+[![Coverage Status](https://coveralls.io/repos/github/Tatsh/mb8611-cli/badge.svg?branch=master)](https://coveralls.io/github/Tatsh/mb8611-cli?branch=master)
+[![Documentation Status](https://readthedocs.org/projects/mb8611-cli/badge/?version=latest)](https://mb8611-cli.readthedocs.io/en/latest/?badge=latest)
+![PyPI - Version](https://img.shields.io/pypi/v/mb8611-cli)
+![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Tatsh/mb8611-cli)
+![GitHub](https://img.shields.io/github/license/Tatsh/mb8611-cli)
+![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/mb8611-cli/v0.0.1/master)
 
-The name of the CLI tool will change in the future if more device support is confirmed.
+CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices.
 
 ## Installation
 

@@ -3,22 +3,41 @@
     "Andrew Udvare <audvare@gmail.com>"
   ],
   "devDependencies": {
-    "cspell": "^6.31.1",
-    "prettier": "^2.8.8",
+    "@prettier/plugin-xml": "^3.2.2",
+    "cspell": "^8.0.0",
+    "markdownlint-cli2": "^0.11.0",
+    "prettier": "^3.1.0",
     "prettier-plugin-ini": "^1.1.0",
-    "prettier-plugin-toml": "^0.3.1"
+    "prettier-plugin-sort-json": "^3.1.0",
+    "prettier-plugin-toml": "^1.0.0"
   },
   "license": "MIT",
   "name": "mb8611-cli",
+  "prettier": {
+    "endOfLine": "lf",
+    "iniSpaceAroundEquals": true,
+    "jsonRecursiveSort": true,
+    "plugins": [
+      "@prettier/plugin-xml",
+      "prettier-plugin-ini",
+      "prettier-plugin-sort-json",
+      "prettier-plugin-toml"
+    ],
+    "printWidth": 100,
+    "singleQuote": true
+  },
   "repository": "git@github.com:Tatsh/mb8611-cli.git",
   "scripts": {
-    "check-formatting": "prettier -c './**/*.cfg' './**/*.ini' './**/*.md' './**/*.toml' './**/*.yml' ./.prettierrc ./.style.yapf && isort . --check && yapf -rd mb8611 .stubs test",
-    "check-spelling": "cspell --no-progress './**/*'  './**/.*'",
-    "format": "prettier -w './**/*.cfg' './**/*.ini' './**/*.md' './**/*.toml' './**/*.yml' ./.prettierrc ./.style.yapf && isort . && yapf -ri mb8611 .stubs test",
-    "install-python-deps": "python -m pip install --upgrade pip && pip install poetry && poetry install && pip install -e . && pip install mypy pylint pylint-quotes pytest pytest-cov coveralls pytest-mock types-requests toml yapf",
-    "mypy": "mypy mb8611 test",
-    "pylint": "pylint mb8611 test",
-    "qa": "yarn mypy && yarn pylint && yarn check-spelling && yarn check-formatting"
+    "check-formatting": "yarn prettier -c . && poetry run yapf -prd . && markdownlint-cli2 '**/*.md' '#node_modules'",
+    "check-spelling": "cspell --no-progress .",
+    "clean-dict": "r=(); while IFS=$\\n read -r w; do ! rg --no-config -qi. -g '!.vscode/dictionary.txt' -m 1 \"$w\" . && r+=(\"$w\"); done < .vscode/dictionary.txt; j=$(printf \"|%s\" \"${r[@]}\"); j=\"^(${j:1})$\"; grep -Ev \"${j}\" .vscode/dictionary.txt > new && mv new .vscode/dictionary.txt",
+    "format": "yarn prettier -w . && poetry run yapf -pri . && markdownlint-cli2 --fix '**/*.md' '#node_modules'",
+    "gen-manpage": "sphinx-build -T -E -b man -d docs/_build/doctrees -D language=en docs man",
+    "mypy": "poetry run mypy .",
+    "qa": "yarn mypy && yarn ruff && yarn check-spelling && yarn check-formatting",
+    "ruff": "poetry run ruff .",
+    "ruff:fix": "poetry run ruff --fix .",
+    "test": "poetry run pytest"
   },
   "version": "0.0.1"
 }
