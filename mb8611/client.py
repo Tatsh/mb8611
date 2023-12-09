@@ -35,7 +35,8 @@ logger = logging.getLogger(__name__)
 
 
 class CallHNAPError(Exception):
-    pass
+    def __init__(self, response: Response) -> None:
+        super().__init__(f'HNAP error: {response}')
 
 
 class LockedError(Exception):
@@ -60,7 +61,7 @@ class Client:
         self.private_key = 'withoutloginkey'
 
     def login(self) -> None:
-        """Login."""
+        """Login. This is 99% the same as what happens in a browser but is not fully correct."""
         response = self.call_hnap('Login', {
             'Login': {
                 'Action': 'request',
@@ -190,7 +191,7 @@ class Client:
         res = r.json()
         logger.debug('Response: %s', res)
         if check and res[f'{action}Response'][f'{action}Result'] != 'OK':
-            raise CallHNAPError
+            raise CallHNAPError(res)
         return cast(Response, res)
 
     def call_multiple_hnaps(self,
@@ -198,7 +199,8 @@ class Client:
                             check: bool = True) -> GetMultipleHNAPsResponse:
         """
         Call multiple HNAPs. Equivalent to calling ``call_hnap`` with action ``'GetMultipleHNAPs'``
-        and the correct payload. Some actions must be called this way in any case.
+        and the correct payload. Some actions must be called this way even if they are the only
+        action.
         """
         return self.call_hnap('GetMultipleHNAPs',
                               cast(GetMultipleHNAPsPayload,

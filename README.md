@@ -28,14 +28,21 @@ pip install mb8611-cli
 ## Command line usage
 
 ```plain
-Usage: mb8611 [--host HOST] --password PASSWORD [--username USERNAME] [--debug] ACTION
+Usage: mb8611 [OPTIONS] {addr|address|clear-log|conn|connection|connection-
+              info|conninfo|down|downstream|lag|lag-
+              status|log|reboot|software|software-status|startup|startup-
+              sequence|up|upstream}
+
+  Main CLI.
 
 Options:
-  -H, --host TEXT      Defaults to '192.168.100.1'.
-  -d, --debug          Enable debug level logging
-  -u, --username TEXT  Defaults to 'admin'.
-  -p, --password TEXT  [required]
-  --help               Show this message and exit
+  -H, --host TEXT      Host to connect to.
+  -d, --debug          Enable debug level logging.
+  -j, --json           Only output JSON. Encoded lists (tables) will still be
+                       parsed.
+  -p, --password TEXT  Administrator password.
+  -u, --username TEXT  Administrator username.
+  --help               Show this message and exit.
 ```
 
 ## Library usage
@@ -96,7 +103,7 @@ with Client(the_password) as client:
 ### Check if the modem is online
 
 ```shell
-mb8611 --output-json --password ... conn | jq -r .MotoHomeOnline
+mb8611 --output-json conn | jq -r .MotoHomeOnline
 ```
 
 ```plain
@@ -116,7 +123,7 @@ The output is a list of lists. Columns are:
 - Pwr (dBmV)
 
 ```shell
-mb8611 -p ... up -j | jq -r '.MotoConnUpstreamChannel[]|@csv' | tr -d '"' | tabulate -s ','
+mb8611 up -j | jq -r '.MotoConnUpstreamChannel[]|@csv' | tr -d '"' | tabulate -s ','
 ```
 
 ```plain
@@ -130,13 +137,13 @@ mb8611 -p ... up -j | jq -r '.MotoConnUpstreamChannel[]|@csv' | tr -d '"' | tabu
 
 ## Known issues
 
-Some actions currently return `'UN-AUTH'`. I have not figured out the issue. They always
-work in the browser.
+**Note:** The modem does not require any authentication for the currently working actions such as
+`addr`.
+
+The following actions do not work as they require proper authentication (these return `'UN-AUTH'`
+at this time):
 
 - `clear-log` / `SetStatusLogSettings`
 - `SetStatusSecuritySettings`
 - `SetMotoLagStatus`
 - `SetMotoStatusDSTargetFreq`
-
-Some actions only work when wrapped through the `GetMultipleHNAPs` API, such as `GetHomeAddress`.
-This may be related to the same issue above.

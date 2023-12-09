@@ -6,6 +6,7 @@ conn
 conninfo
 contextlib
 cookiecutter
+docsis
 doctrees
 docutils
 ecda
