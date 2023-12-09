@@ -1,4 +1,4 @@
-# MB8611 CLI
+# mb8611
 
 [![QA](https://github.com/Tatsh/mb8611/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/mb8611/actions/workflows/qa.yml)
 [![Tests](https://github.com/Tatsh/mb8611/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/mb8611/actions/workflows/tests.yml)

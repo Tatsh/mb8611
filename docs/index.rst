@@ -1,4 +1,4 @@
-Welcome to MB8611 CLI's documentation!
+Welcome to mb8611's documentation!
 ======================================
 Commands
 --------
