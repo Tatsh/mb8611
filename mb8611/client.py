@@ -1,11 +1,11 @@
 """Client class."""
 import contextlib
 import hmac
+import logging
 from collections.abc import Collection
 from types import TracebackType
 from typing import Any, Literal, cast, overload
 
-from loguru import logger
 from requests import Session
 
 from .api import (
@@ -31,6 +31,8 @@ from .api.settings import (
 from .constants import MUST_BE_CALLED_FROM_MULTIPLE, SHARED_HEADERS
 from .utils import make_hnap_auth, make_soap_action_uri
 
+logger = logging.getLogger(__name__)
+
 
 class CallHNAPError(Exception):
     pass
@@ -42,10 +44,8 @@ class LockedError(Exception):
                          'Wait at least five minutes before attempting again.')
 
 
-class MustUseCallHNAPError(Exception):
-    def __init__(self) -> None:
-        super().__init__('Actions list should have at least 2 elements. Use call_hnap() for a '
-                         'single action.')
+class LoginFailed(RuntimeError):
+    pass
 
 
 class Client:
@@ -61,16 +61,16 @@ class Client:
 
     def login(self) -> None:
         """Login."""
-        response: LoginResponse = self.call_hnap(
-            'Login', {
-                'Login': {
-                    'Action': 'request',
-                    'Username': self.username,
-                    'LoginPassword': '',
-                    'Captcha': '',
-                    'PrivateLogin': 'LoginPassword'
-                }
-            })
+        response = self.call_hnap('Login', {
+            'Login': {
+                'Action': 'request',
+                'Username': self.username,
+                'LoginPassword': '',
+                'Captcha': '',
+                'PrivateLogin': 'LoginPassword'
+            }
+        },
+                                  check=False)
         if response['LoginResponse']['LoginResult'] == 'FAILED':
             raise LockedError
         assert 'PublicKey' in response['LoginResponse']
@@ -92,75 +92,79 @@ class Client:
                                      path=path,
                                      domain=self.host,
                                      rest={'HttpOnly': True})  # type: ignore[no-untyped-call]
-        response = self.call_hnap(
-            'Login', {
-                'Login': {
-                    'Action':
-                        'request',
-                    'Username':
-                        self.username,
-                    'LoginPassword':
-                        hmac.new(self.private_key.encode(), challenge.encode(),
-                                 'md5').hexdigest().upper(),
-                    'Captcha':
-                        '',
-                    'PrivateLogin':
-                        'LoginPassword'
-                }
-            })
-        assert response['LoginResponse']['LoginResult'] == 'OK'
+        response = self.call_hnap('Login', {
+            'Login': {
+                'Action':
+                    'request',
+                'Username':
+                    self.username,
+                'LoginPassword':
+                    hmac.new(self.private_key.encode(), challenge.encode(),
+                             'md5').hexdigest().upper(),
+                'Captcha':
+                    '',
+                'PrivateLogin':
+                    'LoginPassword'
+            }
+        },
+                                  check=False)
+        if response['LoginResponse']['LoginResult'] != 'OK':
+            raise LoginFailed
 
     @overload
     def call_hnap(self,
                   action: Literal['GetMultipleHNAPs'],
                   payload: GetMultipleHNAPsPayload,
-                  check: bool = ...) -> GetMultipleHNAPsResponse:
+                  check: bool = ...) -> GetMultipleHNAPsResponse:  # pragma: no cover
         ...
 
     @overload
     def call_hnap(self,
                   action: Literal['GetNetworkModeSettings'],
                   payload: GetNetworkModeSettingsPayload,
-                  check: bool = ...) -> GetNetworkModeSettingsResponse:
+                  check: bool = ...) -> GetNetworkModeSettingsResponse:  # pragma: no cover
         ...
 
     @overload
     def call_hnap(self,
                   action: Literal['Login'],
                   payload: LoginPayload,
-                  check: bool = ...) -> LoginResponse:
+                  check: bool = ...) -> LoginResponse:  # pragma: no cover
         ...
 
     @overload
     def call_hnap(self,
                   action: Literal['SetMotoLagStatus'],
                   payload: SetMotoLagStatusPayload,
-                  check: bool = ...) -> SetMotoLagStatusResponse:
+                  check: bool = ...) -> SetMotoLagStatusResponse:  # pragma: no cover
         ...
 
     @overload
     def call_hnap(self,
                   action: Literal['SetStatusLogSettings'],
                   payload: SetStatusLogSettingsPayload,
-                  check: bool = ...) -> SetStatusLogSettingsResponse:
+                  check: bool = ...) -> SetStatusLogSettingsResponse:  # pragma: no cover
         ...
 
     @overload
     def call_hnap(self,
                   action: Literal['SetStatusSecuritySettings'],
                   payload: SetStatusSecuritySettingsPayload | RebootPayload,
-                  check: bool = ...) -> SetStatusLogSettingsResponse:
+                  check: bool = ...) -> SetStatusLogSettingsResponse:  # pragma: no cover
         ...
 
     @overload
     def call_hnap(self,
                   action: Action,
                   payload: Literal[None] = ...,
-                  check: bool = ...) -> Response:
+                  check: bool = ...) -> Response:  # pragma: no cover
         ...
 
     @overload
-    def call_hnap(self, action: str, payload: Any = ..., check: bool = ...) -> Response:
+    def call_hnap(self,
+                  action: str,
+                  payload: Any = ...,
+                  check: bool = ...) -> Response:  # pragma: no cover
         ...
 
     def call_hnap(self,
@@ -174,16 +178,17 @@ class Client:
             self.session.cookies.clear(self.host, '/HNAP1', 'Secure')
         if action in MUST_BE_CALLED_FROM_MULTIPLE:
             return self.call_multiple_hnaps((cast(MultipleHNAPAction, action),), check=False)
-        logger.debug(f'Calling {action}')
+        logger.debug('Calling %s', action)
         headers = dict(HNAP_AUTH=make_hnap_auth(action, self.private_key),
                        SOAPACTION=make_soap_action_uri(action))
-        logger.debug(f'Headers: {headers}')
-        logger.debug(f'Cookies: {self.session.cookies.get_dict()}')  # type: ignore[no-untyped-call]
-        logger.debug(f'Payload: {payload}')
+        logger.debug('Headers: %s', headers)
+        logger.debug('Cookies: %s',
+                     self.session.cookies.get_dict())  # type: ignore[no-untyped-call]
+        logger.debug('Payload: %s', payload)
         r = self.session.post(self.hnap1_endpoint, headers=headers, json=payload, verify=False)
         r.raise_for_status()
         res = r.json()
-        logger.debug(f'Response: {res}')
+        logger.debug('Response: %s', res)
         if check and res[f'{action}Response'][f'{action}Result'] != 'OK':
             raise CallHNAPError
         return cast(Response, res)
@@ -202,10 +207,6 @@ class Client:
                                        for action in actions
                                    }}),
                               check=check)
-
-    def logout(self) -> Any:
-        """Logout."""
-        return self.call_hnap('Logout')
 
     def __enter__(self) -> 'Client':
         """Logs in and returns a client."""

@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 from loguru import logger
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from types import FrameType
 
 __all__ = ('make_hnap_auth', 'make_soap_action_uri', 'parse_table_str', 'setup_logging')
@@ -38,9 +38,9 @@ def setup_log_intercept_handler() -> None:  # pragma: no cover
     logging.basicConfig(handlers=(InterceptHandler(),), level=0)
 
 
-def setup_logging(debug: bool | None = False) -> None:
+def setup_logging(debug: bool | None = False) -> None:  # pragma: no cover
     """Shared function to enable logging."""
-    if debug:  # pragma: no cover
+    if debug:
         setup_log_intercept_handler()
         logger.enable('')
     else:

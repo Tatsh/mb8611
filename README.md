@@ -13,6 +13,14 @@ CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola 
 
 ## Installation
 
+### Poetry
+
+```shell
+poetry add mb8611-cli
+```
+
+### Pip
+
 ```shell
 pip install mb8611-cli
 ```
