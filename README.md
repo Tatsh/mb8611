@@ -103,7 +103,7 @@ with Client(the_password) as client:
 ### Check if the modem is online
 
 ```shell
-mb8611 --output-json conn | jq -r .MotoHomeOnline
+mb8611 --json conn | jq -r .MotoHomeOnline
 ```
 
 ```plain
