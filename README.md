@@ -9,7 +9,7 @@
 ![GitHub](https://img.shields.io/github/license/Tatsh/mb8611)
 ![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/mb8611/v0.0.1/master)
 
-CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices.
+CLI tool and library for managing the Motorola MB8611 series modem and maybe other Motorola devices.
 
 ## Installation
 
