@@ -1,9 +1,8 @@
-# pylint: disable=invalid-name
-from typing import Literal, NotRequired, TypedDict
+from typing import Any, Literal, NotRequired, TypedDict
 
 __all__ = ('GetNetworkModeSettingsPayload', 'GetNetworkModeSettingsResponse',
            'SetMotoLagStatusPayload', 'SetMotoStatusDSTargetFreqPayload',
-           'SetStatusSecuritySettingsPayload')
+           'SetStatusLogSettingsResponse', 'SetStatusSecuritySettingsPayload')
 
 
 class _SetMotoStatusDSTargetFreq(TypedDict):
@@ -78,3 +77,15 @@ class _SetStatusLogSettingsResponse(TypedDict):
 
 class SetStatusLogSettingsResponse(TypedDict):
     SetStatusLogSettingsResponse: _SetStatusLogSettingsResponse
+
+
+class SetStatusLogSettingsPayload(TypedDict):
+    SetStatusLogSettings: _SetStatusLogSettings
+
+
+class SetStatusSecuritySettingsResponse(TypedDict):
+    SetStatusSecuritySettings: Any
+
+
+class SetMotoLagStatusResponse(TypedDict):
+    SetMotoLagStatus: Any

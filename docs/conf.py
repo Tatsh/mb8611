@@ -25,5 +25,10 @@ extensions: Final[list[str]] = (['sphinx.ext.autodoc', 'sphinx.ext.napoleon'] +
 exclude_patterns: Final[list[str]] = []
 master_doc: Final[str] = 'index'
 html_static_path: Final[list[str]] = []
-html_theme: Final[str] = 'alabaster'
+html_theme: Final[str] = 'sphinxdoc'
+man_pages: Final[list[tuple[str, ...]]] = [
+    ('commands', 'mb8611',
+     'CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices.',
+     author, '1')
+]
 templates_path: Final[list[str]] = ['_templates']

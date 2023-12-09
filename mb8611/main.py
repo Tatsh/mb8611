@@ -1,16 +1,21 @@
 """Main command."""
 import json
 import warnings
-from typing import Any
+from typing import Any, Final, Literal, cast
 
 import click
 from urllib3.exceptions import InsecureRequestWarning
 
+from .api import Action, Response
 from .client import Client
 from .constants import ROW_DELIMITERS, TABLE_KEYS
 from .utils import parse_table_str, setup_logging
 
-ACTION_ALIAS_MAPPING = {
+ActionAlias = Literal['addr', 'address', 'clear-log', 'conn', 'connection', 'connection-info',
+                      'conninfo', 'down', 'downstream', 'lag', 'lag-status', 'log', 'reboot',
+                      'software', 'software-status', 'startup', 'startup-sequence', 'up',
+                      'upstream']
+ACTION_ALIAS_MAPPING: Final[dict[ActionAlias, Action]] = {
     'addr': 'GetHomeAddress',
     'address': 'GetHomeAddress',
     'clear-log': 'SetStatusLogSettings',
@@ -31,6 +36,7 @@ ACTION_ALIAS_MAPPING = {
     'up': 'GetMotoStatusUpstreamChannelInfo',
     'upstream': 'GetMotoStatusUpstreamChannelInfo',
 }
+TopKey = Literal['GetMultipleHNAPsResponse', 'LoginResponse']
 
 
 @click.command()
@@ -43,7 +49,7 @@ ACTION_ALIAS_MAPPING = {
               help='Only output JSON. Encoded lists (tables) will still be parsed.')
 @click.option('-p', '--password', required=True, help='Administrator password.')
 @click.option('-u', '--username', default='admin', help='Administrator username.')
-def main(action: str,
+def main(action: ActionAlias,
          host: str,
          password: str,
          debug: bool = False,
@@ -55,25 +61,31 @@ def main(action: str,
     warnings.filterwarnings(action='ignore', category=InsecureRequestWarning)
     setup_logging(debug)
     with Client(password, host, username) as client:
-        resp: dict[str, Any]
+        response: Response
         if action == 'clear-log':
-            resp = client.call_hnap(
+            response = client.call_hnap(
                 'SetStatusLogSettings',
-                dict(SetStatusLogSettings=dict(MotoStatusLogAction='1', MotoStatusLogXXX='XXX')),
+                {'SetStatusLogSettings': {
+                    'MotoStatusLogAction': '1',
+                    'MotoStatusLogXXX': 'XXX'
+                }},
                 check=not output_json)
         elif action == 'reboot':
-            resp = client.call_hnap('SetStatusSecuritySettings',
-                                    dict(SetStatusSecuritySettings=dict(MotoStatusSecXXX='XXX')),
-                                    check=not output_json)
+            response = client.call_hnap('SetStatusSecuritySettings',
+                                        {'SetStatusSecuritySettings': {
+                                            'MotoStatusSecXXX': 'XXX'
+                                        }},
+                                        check=not output_json)
         else:
-            resp = client.call_hnap(ACTION_ALIAS_MAPPING[action], check=not output_json)
+            response = client.call_hnap(ACTION_ALIAS_MAPPING[action], check=not output_json)
         top_key = f'{ACTION_ALIAS_MAPPING[action]}Response'
         result_key = f'{ACTION_ALIAS_MAPPING[action]}Result'
+        res_d = cast(dict[str, Any], response)
         if not output_json:
-            assert resp[top_key][result_key] == 'OK'
-        assert top_key in resp
+            assert res_d[top_key][result_key] == 'OK'
+        assert top_key in response
         if not output_json:
-            for k, value in sorted(resp[top_key].items()):
+            for k, value in sorted(res_d[top_key].items()):
                 if k == result_key:
                     continue
                 if k not in TABLE_KEYS:
@@ -82,8 +94,8 @@ def main(action: str,
                     click.echo(
                         list(parse_table_str(value, row_delimiter=ROW_DELIMITERS.get(k, '|+|'))))
         else:
-            for k, value in resp[top_key].items():
+            for k, value in res_d[top_key].items():
                 if k in TABLE_KEYS:
-                    resp[top_key][k] = list(
+                    res_d[top_key][k] = list(
                         parse_table_str(value, row_delimiter=ROW_DELIMITERS.get(k, '|+|')))
-            click.echo(json.dumps(resp[top_key], indent=2))
+            click.echo(json.dumps(res_d[top_key], indent=2))

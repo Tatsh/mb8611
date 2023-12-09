@@ -64,17 +64,16 @@ Some actions require a specific payload:
 import pprint
 
 from mb8611.client import Client
-from mb8611.api import GetHomeAddressResponse
 
 with Client(the_password) as client:
-    addr: GetHomeAddressResponse = client.call_hnap('GetHomeAddress')
+    addr = client.call_hnap('GetHomeAddress')
     # Fully typed dictionary
     assert addr['GetHomeAddressResponse']['GetHomeAddressResult'] == 'OK'
     pprint.pprint(addr)
 ```
 
-`Client` implements a context manager. Calling `Client.login` unnecessary when using
-it with the `with` statement.
+`Client` implements a context manager. Calling `Client.login` unnecessary when using it with the
+`with` statement.
 
 ```python
 {'GetHomeAddressResponse': {'GetHomeAddressResult': 'OK',

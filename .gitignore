@@ -16,5 +16,6 @@
 /node_modules/
 /yarn-error.log
 __pycache__/
+_build/
 build/
 dist/

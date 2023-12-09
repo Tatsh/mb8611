@@ -9,7 +9,6 @@
   "enabledLanguageIds": [
     "git-commit",
     "ignore",
-    "jinja",
     "json",
     "jsonc",
     "markdown",

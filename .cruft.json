@@ -1,28 +1,14 @@
 {
-  "template": "git@github.com:Tatsh/cookiecutter-python-project.git",
-  "commit": "1e8a1b7cf7479085f4b217b0edd3783fb51d1cb6",
   "checkout": null,
+  "commit": "1e8a1b7cf7479085f4b217b0edd3783fb51d1cb6",
   "context": {
     "cookiecutter": {
-      "directory_name": "mb8611-cli",
-      "module_name": "mb8611",
-      "want_main": true,
-      "want_requests": true,
-      "main_cli_name": "mb8611",
-      "description": "CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices.",
-      "docs_theme": "alabaster",
-      "gh_pages_theme": "jekyll-theme-midnight",
-      "github_username": "Tatsh",
-      "human_project_name": "MB8611 CLI",
-      "repository_name": "mb8611-cli",
-      "year": "2023",
+      "_template": "git@github.com:Tatsh/cookiecutter-python-project.git",
       "authors": {
-        "list": [
-          "Andrew Udvare <audvare@gmail.com>"
-        ]
+        "list": ["Andrew Udvare <audvare@gmail.com>"]
       },
-      "readme": {
-        "description": "CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices."
+      "commitizen_version_files": {
+        "list": ["README.md", "man/mb8611.1", "package.json", "mb8611/__init__.py"]
       },
       "cruft_skip": {
         "list": [
@@ -48,16 +34,23 @@
           "mb8611/"
         ]
       },
-      "commitizen_version_files": {
-        "list": [
-          "README.md",
-          "man/mb8611.1",
-          "package.json",
-          "mb8611/__init__.py"
-        ]
+      "description": "CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices.",
+      "directory_name": "mb8611-cli",
+      "docs_theme": "alabaster",
+      "gh_pages_theme": "jekyll-theme-midnight",
+      "github_username": "Tatsh",
+      "human_project_name": "MB8611 CLI",
+      "main_cli_name": "mb8611",
+      "module_name": "mb8611",
+      "readme": {
+        "description": "CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices."
       },
-      "_template": "git@github.com:Tatsh/cookiecutter-python-project.git"
+      "repository_name": "mb8611-cli",
+      "want_main": true,
+      "want_requests": true,
+      "year": "2023"
     }
   },
-  "directory": null
+  "directory": null,
+  "template": "git@github.com:Tatsh/cookiecutter-python-project.git"
 }

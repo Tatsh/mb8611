@@ -1,4 +1,3 @@
-# pylint: disable=invalid-name
 """Type information for use with the ``GetMultipleHNAPs`` API."""
 from typing import Literal, NotRequired, TypedDict
 
@@ -20,25 +19,31 @@ class _GetMultipleHNAPsPayloadGetMultipleHNAPs(TypedDict, total=False):
 
 
 class GetMultipleHNAPsPayload(TypedDict):
+    """Multiple HNAPs payload."""
     GetMultipleHNAPs: _GetMultipleHNAPsPayloadGetMultipleHNAPs
 
 
 class GetHomeAddressResponse(TypedDict):
+    """Network address information."""
     GetHomeAddressResult: Literal['OK', 'UN-AUTH']
     MotoHomeIpAddress: str
+    """IPv4 address."""
     MotoHomeIpv6Address: str
+    """IPv6 address."""
     MotoHomeMacAddress: str
+    """MAC address."""
     MotoHomeSfVer: str
+    """Firmware version."""
 
 
 class _GetHomeConnectionResponse(TypedDict):
     GetHomeConnectionResult: str
-    MotoHomeOnline: str  # 'Connected'
-    #: Number of channels connected
-    #: Downstream
+    MotoHomeOnline: str
+    """``'Connected'``."""
     MotoHomeDownNum: str
-    #: Upstream
+    """Downstream number of channels connected."""
     MotoHomeUpNum: str
+    """Upstream number of channels connected."""
 
 
 class _GetMotoStatusSoftwareResponse(TypedDict):
@@ -53,6 +58,7 @@ class _GetMotoStatusSoftwareResponse(TypedDict):
 
 
 class XXXResponse(TypedDict):
+    """Unknown."""
     XXX: str
 
 
@@ -134,14 +140,16 @@ class _GetMotoStatusSecXXXResponse(XXXResponse, TypedDict):
 
 
 class _GetMotoStatusSecAccountResponse(TypedDict):
-    GetMotoStatusSecAccountResult: str
-    # All values here are AES-128 encrypted. The key is the PrivateKey assigned at
-    # login.
+    """
+    All values other than ``GetMotoStatusSecAccountResult`` are AES-128 encrypted. The key is the
+    ``PrivateKey`` assigned at login.
+    """
     CurrentLogin: str
     CurrentNameAdmin: str
     CurrentNameUser: str
     CurrentPwAdmin: str
     CurrentPwUser: str
+    GetMotoStatusSecAccountResult: str
 
 
 class _GetMultipleHNAPsResponseTop(TypedDict):
@@ -163,4 +171,5 @@ class _GetMultipleHNAPsResponseTop(TypedDict):
 
 
 class GetMultipleHNAPsResponse(TypedDict):
+    """Multiple HNAPs response."""
     GetMultipleHNAPsResponse: _GetMultipleHNAPsResponseTop

@@ -1,4 +1,3 @@
-# pylint: disable=invalid-name
 from typing import Literal, NotRequired, TypedDict
 
 
@@ -11,6 +10,7 @@ class _LoginPayloadLogin(TypedDict):
 
 
 class LoginPayload(TypedDict):
+    """Login payload."""
     Login: _LoginPayloadLogin
 
 
@@ -22,4 +22,6 @@ class _LoginResponseLoginResponse(TypedDict):
 
 
 class LoginResponse(TypedDict):
+    """Login response."""
     LoginResponse: _LoginResponseLoginResponse
+    """Login response."""
