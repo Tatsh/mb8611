@@ -21,7 +21,7 @@
       }
     }
   },
-  "name": "mb8611-cli",
+  "name": "mb8611",
   "prettier": {
     "endOfLine": "lf",
     "iniSpaceAroundEquals": true,
@@ -35,7 +35,7 @@
     "printWidth": 100,
     "singleQuote": true
   },
-  "repository": "git@github.com:Tatsh/mb8611-cli.git",
+  "repository": "git@github.com:Tatsh/mb8611.git",
   "scripts": {
     "check-formatting": "yarn prettier -c . && poetry run yapf -prd . && markdownlint-cli2 '**/*.md' '#node_modules'",
     "check-spelling": "cspell --no-progress .",

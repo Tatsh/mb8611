@@ -35,7 +35,7 @@
         ]
       },
       "description": "CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices.",
-      "directory_name": "mb8611-cli",
+      "directory_name": "mb8611",
       "docs_theme": "alabaster",
       "gh_pages_theme": "jekyll-theme-midnight",
       "github_username": "Tatsh",
@@ -45,7 +45,7 @@
       "readme": {
         "description": "CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices."
       },
-      "repository_name": "mb8611-cli",
+      "repository_name": "mb8611",
       "want_main": true,
       "want_requests": true,
       "year": "2023"

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "mb8611-cli"
+name = "mb8611"
 version = "0.0.1"
 authors = ["Andrew Udvare <audvare@gmail.com>"]
 classifiers = [
@@ -12,13 +12,13 @@ classifiers = [
   "Typing :: Typed"
 ]
 description = "CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices."
-documentation = "https://mb8611-cli.readthedocs.io/"
+documentation = "https://mb8611.readthedocs.io/"
 include = ["man"]
 keywords = ["command line"]
 license = "MIT"
 packages = [{ include = "mb8611" }]
 readme = "README.md"
-repository = "https://github.com/Tatsh/mb8611-cli"
+repository = "https://github.com/Tatsh/mb8611"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4"
