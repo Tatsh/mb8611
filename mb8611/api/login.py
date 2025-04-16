@@ -1,4 +1,6 @@
-from typing import Literal, NotRequired, TypedDict
+from typing import Literal, TypedDict
+
+from typing_extensions import NotRequired
 
 
 class _LoginPayloadLogin(TypedDict):

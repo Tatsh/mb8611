@@ -1,10 +1,10 @@
 """Client class."""
-import contextlib
-import hmac
-import logging
 from collections.abc import Collection
 from types import TracebackType
 from typing import Any, Literal, cast, overload
+import contextlib
+import hmac
+import logging
 
 from requests import Session
 
@@ -82,17 +82,16 @@ class Client:
             self.session.cookies.set('uid',
                                      response['LoginResponse']['Cookie'],
                                      path='/',
-                                     domain=self.host)  # type: ignore[no-untyped-call]
+                                     domain=self.host)
         self.private_key = hmac.new((public_key + self.password).encode(), challenge.encode(),
                                     'md5').hexdigest().upper()
-        self.session.cookies.set('PrivateKey', self.private_key, path='/',
-                                 domain=self.host)  # type: ignore[no-untyped-call]
+        self.session.cookies.set('PrivateKey', self.private_key, path='/', domain=self.host)
         for path in ('/font', '/js/SOAP', '/js', '/css', '/', '/image', '/HNAP1'):
             self.session.cookies.set('',
                                      'Secure',
                                      path=path,
                                      domain=self.host,
-                                     rest={'HttpOnly': True})  # type: ignore[no-untyped-call]
+                                     rest={'HttpOnly': True})
         response = self.call_hnap('Login', {
             'Login': {
                 'Action':
@@ -116,6 +115,7 @@ class Client:
     def call_hnap(self,
                   action: Literal['GetMultipleHNAPs'],
                   payload: GetMultipleHNAPsPayload,
+                  *,
                   check: bool = ...) -> GetMultipleHNAPsResponse:  # pragma: no cover
         ...
 
@@ -123,6 +123,7 @@ class Client:
     def call_hnap(self,
                   action: Literal['GetNetworkModeSettings'],
                   payload: GetNetworkModeSettingsPayload,
+                  *,
                   check: bool = ...) -> GetNetworkModeSettingsResponse:  # pragma: no cover
         ...
 
@@ -130,6 +131,7 @@ class Client:
     def call_hnap(self,
                   action: Literal['Login'],
                   payload: LoginPayload,
+                  *,
                   check: bool = ...) -> LoginResponse:  # pragma: no cover
         ...
 
@@ -137,6 +139,7 @@ class Client:
     def call_hnap(self,
                   action: Literal['SetMotoLagStatus'],
                   payload: SetMotoLagStatusPayload,
+                  *,
                   check: bool = ...) -> SetMotoLagStatusResponse:  # pragma: no cover
         ...
 
@@ -144,6 +147,7 @@ class Client:
     def call_hnap(self,
                   action: Literal['SetStatusLogSettings'],
                   payload: SetStatusLogSettingsPayload,
+                  *,
                   check: bool = ...) -> SetStatusLogSettingsResponse:  # pragma: no cover
         ...
 
@@ -151,13 +155,15 @@ class Client:
     def call_hnap(self,
                   action: Literal['SetStatusSecuritySettings'],
                   payload: SetStatusSecuritySettingsPayload | RebootPayload,
+                  *,
                   check: bool = ...) -> SetStatusLogSettingsResponse:  # pragma: no cover
         ...
 
     @overload
     def call_hnap(self,
                   action: Action,
-                  payload: Literal[None] = ...,
+                  payload: None = ...,
+                  *,
                   check: bool = ...) -> Response:  # pragma: no cover
         ...
 
@@ -165,12 +171,14 @@ class Client:
     def call_hnap(self,
                   action: str,
                   payload: Any = ...,
+                  *,
                   check: bool = ...) -> Response:  # pragma: no cover
         ...
 
     def call_hnap(self,
                   action: Action | str,
                   payload: Payload | None = None,
+                  *,
                   check: bool = True) -> Response:
         """Invoke an action."""
         # Clear invalid cookie. Chrome interprets this set-cookie header as having a key '' and
@@ -178,13 +186,14 @@ class Client:
         with contextlib.suppress(KeyError):
             self.session.cookies.clear(self.host, '/HNAP1', 'Secure')
         if action in MUST_BE_CALLED_FROM_MULTIPLE:
-            return self.call_multiple_hnaps((cast(MultipleHNAPAction, action),), check=False)
+            return self.call_multiple_hnaps((cast('MultipleHNAPAction', action),), check=False)
         logger.debug('Calling %s', action)
-        headers = dict(HNAP_AUTH=make_hnap_auth(action, self.private_key),
-                       SOAPACTION=make_soap_action_uri(action))
+        headers = {
+            'HNAP_AUTH': make_hnap_auth(action, self.private_key),
+            'SOAPACTION': make_soap_action_uri(action)
+        }
         logger.debug('Headers: %s', headers)
-        logger.debug('Cookies: %s',
-                     self.session.cookies.get_dict())  # type: ignore[no-untyped-call]
+        logger.debug('Cookies: %s', self.session.cookies.get_dict())
         logger.debug('Payload: %s', payload)
         r = self.session.post(self.hnap1_endpoint, headers=headers, json=payload, verify=False)
         r.raise_for_status()
@@ -192,30 +201,29 @@ class Client:
         logger.debug('Response: %s', res)
         if check and res[f'{action}Response'][f'{action}Result'] != 'OK':
             raise CallHNAPError(res)
-        return cast(Response, res)
+        return cast('Response', res)
 
     def call_multiple_hnaps(self,
                             actions: Collection[MultipleHNAPAction],
+                            *,
                             check: bool = True) -> GetMultipleHNAPsResponse:
         """
-        Call multiple HNAPs. Equivalent to calling ``call_hnap`` with action ``'GetMultipleHNAPs'``
-        and the correct payload. Some actions must be called this way even if they are the only
-        action.
+        Call multiple HNAPs.
+
+        Equivalent to calling ``call_hnap`` with action ``'GetMultipleHNAPs'`` and the correct
+        payload. Some actions must be called this way even if they are the only action.
         """
         return self.call_hnap('GetMultipleHNAPs',
-                              cast(GetMultipleHNAPsPayload,
-                                   {'GetMultipleHNAPs': {
-                                       action: ''
-                                       for action in actions
-                                   }}),
+                              cast('GetMultipleHNAPsPayload',
+                                   {'GetMultipleHNAPs': dict.fromkeys(actions, '')}),
                               check=check)
 
     def __enter__(self) -> 'Client':
-        """Logs in and returns a client."""
+        """Log in and return a client."""
         self.login()
         return self
 
     def __exit__(self, exc_cls: type[BaseException] | None, base_exc: BaseException | None,
                  traceback: TracebackType | None) -> None:
-        """Performs logout action."""
+        """Perform logout action."""
         self.session.get(f'https://{self.host}/Logout.html')

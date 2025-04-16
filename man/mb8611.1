@@ -27,22 +27,22 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "MB8611" "1" "Dec 09, 2023" "0.0.1" "mb8611"
+.TH "MB8611" "1" "Apr 16, 2025" "0.0.1" "mb8611"
 .SH NAME
-mb8611 \- CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices.
+mb8611 \- mb8611 v0.0.1
+.SH COMMANDS
+.SS mb8611
 .sp
-Main CLI.
+Manage a MB8611 series modem.
 .INDENT 0.0
 .INDENT 3.5
 .sp
-.nf
-.ft C
+.EX
 mb8611 [OPTIONS] {addr|address|clear\-log|conn|connection|connection\-
        info|conninfo|down|downstream|lag|lag\-
        status|log|reboot|software|software\-status|startup|startup\-
        sequence|up|upstream}
-.ft P
-.fi
+.EE
 .UNINDENT
 .UNINDENT
 .sp
@@ -79,9 +79,204 @@ Arguments
 .B ACTION
 Required argument
 .UNINDENT
+.SS Client
+.sp
+Client class.
+.INDENT 0.0
+.TP
+.B exception mb8611.client.CallHNAPError(\fI\%response\fP: \fI\%GetHomeAddressResponse\fP | \fI\%GetMultipleHNAPsResponse\fP | \fI\%GetNetworkModeSettingsResponse\fP | \fI\%LoginResponse\fP | \fI\%SetMotoLagStatusResponse\fP | \fI\%SetStatusLogSettingsResponse\fP | SetStatusSecuritySettingsResponse)
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.client.Client(\fI\%password\fP: \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link', \fI\%host\fP: \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link' = \fB\(aq192.168.100.1\(aq\fP, \fI\%username\fP: \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link' = \fB\(aqadmin\(aq\fP)
+Client implementation.
+.INDENT 7.0
+.TP
+.B call_hnap(\fI\%action\fP: \(aqGetMultipleHNAPs\(aq, \fI\%payload\fP: \fI\%GetMultipleHNAPsPayload\fP, *, \fI\%check\fP: \X'tty: link https://docs.python.org/3/library/functions.html#bool'\fI\%bool\fP\X'tty: link' = \fBTrue\fP) -> \fI\%GetMultipleHNAPsResponse\fP
+.TP
+.B call_hnap(\fI\%action\fP: \(aqGetNetworkModeSettings\(aq, \fI\%payload\fP: \fI\%GetNetworkModeSettingsPayload\fP, *, \fI\%check\fP: \X'tty: link https://docs.python.org/3/library/functions.html#bool'\fI\%bool\fP\X'tty: link' = \fBTrue\fP) -> \fI\%GetNetworkModeSettingsResponse\fP
+.TP
+.B call_hnap(\fI\%action\fP: \(aqLogin\(aq, \fI\%payload\fP: \fI\%LoginPayload\fP, *, \fI\%check\fP: \X'tty: link https://docs.python.org/3/library/functions.html#bool'\fI\%bool\fP\X'tty: link' = \fBTrue\fP) -> \fI\%LoginResponse\fP
+.TP
+.B call_hnap(\fI\%action\fP: \(aqSetMotoLagStatus\(aq, \fI\%payload\fP: \fI\%SetMotoLagStatusPayload\fP, *, \fI\%check\fP: \X'tty: link https://docs.python.org/3/library/functions.html#bool'\fI\%bool\fP\X'tty: link' = \fBTrue\fP) -> \fI\%SetMotoLagStatusResponse\fP
+.TP
+.B call_hnap(\fI\%action\fP: \(aqSetStatusLogSettings\(aq, \fI\%payload\fP: \fI\%SetStatusLogSettingsPayload\fP, *, \fI\%check\fP: \X'tty: link https://docs.python.org/3/library/functions.html#bool'\fI\%bool\fP\X'tty: link' = \fBTrue\fP) -> \fI\%SetStatusLogSettingsResponse\fP
+.TP
+.B call_hnap(\fI\%action\fP: \(aqSetStatusSecuritySettings\(aq, \fI\%payload\fP: \fI\%SetStatusSecuritySettingsPayload\fP | \fI\%RebootPayload\fP, *, \fI\%check\fP: \X'tty: link https://docs.python.org/3/library/functions.html#bool'\fI\%bool\fP\X'tty: link' = \fBTrue\fP) -> \fI\%SetStatusLogSettingsResponse\fP
+.TP
+.B call_hnap(\fI\%action\fP: \(aqGetHomeAddress\(aq | \(aqGetHomeConnection\(aq | \(aqGetMotoLagStatus\(aq | \(aqGetMotoStatusConnectionInfo\(aq | \(aqGetMotoStatusDownstreamChannelInfo\(aq | \(aqGetMotoStatusLog\(aq | \(aqGetMotoStatusLogXXX\(aq | \(aqGetMotoStatusSecAccount\(aq | \(aqGetMotoStatusSecXXX\(aq | \(aqGetMotoStatusSoftware\(aq | \(aqGetMotoStatusStartupSequence\(aq | \(aqGetMotoStatusUpstreamChannelInfo\(aq | \(aqGetMultipleHNAPs\(aq | \(aqGetNetworkModeSettings\(aq | \(aqLogin\(aq | \(aqLogout\(aq | \(aqSetMotoLagStatus\(aq | \(aqSetMotoStatusDSTargetFreq\(aq | \(aqSetStatusLogSettings\(aq | \(aqSetStatusSecuritySettings\(aq, \fI\%payload\fP: \X'tty: link https://docs.python.org/3/library/constants.html#None'\fI\%None\fP\X'tty: link' = \fBNone\fP, *, \fI\%check\fP: \X'tty: link https://docs.python.org/3/library/functions.html#bool'\fI\%bool\fP\X'tty: link' = \fBTrue\fP) -> \fI\%GetHomeAddressResponse\fP | \fI\%GetMultipleHNAPsResponse\fP | \fI\%GetNetworkModeSettingsResponse\fP | \fI\%LoginResponse\fP | \fI\%SetMotoLagStatusResponse\fP | \fI\%SetStatusLogSettingsResponse\fP | SetStatusSecuritySettingsResponse
+.TP
+.B call_hnap(\fI\%action\fP: \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link', \fI\%payload\fP: \X'tty: link https://docs.python.org/3/library/typing.html#typing.Any'\fI\%Any\fP\X'tty: link' = \fBNone\fP, *, \fI\%check\fP: \X'tty: link https://docs.python.org/3/library/functions.html#bool'\fI\%bool\fP\X'tty: link' = \fBTrue\fP) -> \fI\%GetHomeAddressResponse\fP | \fI\%GetMultipleHNAPsResponse\fP | \fI\%GetNetworkModeSettingsResponse\fP | \fI\%LoginResponse\fP | \fI\%SetMotoLagStatusResponse\fP | \fI\%SetStatusLogSettingsResponse\fP | SetStatusSecuritySettingsResponse
+Invoke an action.
+.UNINDENT
+.INDENT 7.0
+.TP
+.B call_multiple_hnaps(\fI\%actions\fP: \X'tty: link https://docs.python.org/3/library/collections.abc.html#collections.abc.Collection'\fI\%Collection\fP\X'tty: link'[\(aqGetHomeAddress\(aq | \(aqGetHomeConnection\(aq | \(aqGetMotoLagStatus\(aq | \(aqGetMotoStatusConnectionInfo\(aq | \(aqGetMotoStatusDownstreamChannelInfo\(aq | \(aqGetMotoStatusLog\(aq | \(aqGetMotoStatusLogXXX\(aq | \(aqGetMotoStatusSecAccount\(aq | \(aqGetMotoStatusSecXXX\(aq | \(aqGetMotoStatusSoftware\(aq | \(aqGetMotoStatusStartupSequence\(aq | \(aqGetMotoStatusUpstreamChannelInfo\(aq], *, \fI\%check\fP: \X'tty: link https://docs.python.org/3/library/functions.html#bool'\fI\%bool\fP\X'tty: link' = \fBTrue\fP) -> \fI\%GetMultipleHNAPsResponse\fP
+Call multiple HNAPs.
+.sp
+Equivalent to calling \fBcall_hnap\fP with action \fB\(aqGetMultipleHNAPs\(aq\fP and the correct
+payload. Some actions must be called this way even if they are the only action.
+.UNINDENT
+.INDENT 7.0
+.TP
+.B login() -> \X'tty: link https://docs.python.org/3/library/constants.html#None'\fI\%None\fP\X'tty: link'
+Login. This is 99% the same as what happens in a browser but is not fully correct.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B exception mb8611.client.LockedError
+.UNINDENT
+.INDENT 0.0
+.TP
+.B exception mb8611.client.LoginFailed
+.UNINDENT
+.SS Constants
+.sp
+Common constants.
+.INDENT 0.0
+.TP
+.B mb8611.constants.MUST_BE_CALLED_FROM_MULTIPLE : \X'tty: link https://docs.python.org/3/library/typing.html#typing.Final'\fI\%Final\fP\X'tty: link'[\X'tty: link https://docs.python.org/3/library/stdtypes.html#set'\fI\%set\fP\X'tty: link'[\X'tty: link https://docs.python.org/3/library/typing.html#typing.Literal'\fI\%Literal\fP\X'tty: link'[\(aqGetHomeAddress\(aq, \(aqGetHomeConnection\(aq, \(aqGetMotoLagStatus\(aq, \(aqGetMotoStatusConnectionInfo\(aq, \(aqGetMotoStatusDownstreamChannelInfo\(aq, \(aqGetMotoStatusLog\(aq, \(aqGetMotoStatusLogXXX\(aq, \(aqGetMotoStatusSecAccount\(aq, \(aqGetMotoStatusSecXXX\(aq, \(aqGetMotoStatusSoftware\(aq, \(aqGetMotoStatusStartupSequence\(aq, \(aqGetMotoStatusUpstreamChannelInfo\(aq]]] = \fB{\(aqGetHomeAddress\(aq, \(aqGetHomeConnection\(aq, \(aqGetMotoLagStatus\(aq, \(aqGetMotoStatusConnectionInfo\(aq, \(aqGetMotoStatusDownstreamChannelInfo\(aq, \(aqGetMotoStatusLog\(aq, \(aqGetMotoStatusLogXXX\(aq, \(aqGetMotoStatusSecAccount\(aq, \(aqGetMotoStatusSecXXX\(aq, \(aqGetMotoStatusSoftware\(aq, \(aqGetMotoStatusStartupSequence\(aq, \(aqGetMotoStatusUpstreamChannelInfo\(aq}\fP
+Actions that do not work without using GetMultipleHNAPs.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B mb8611.constants.ROW_DELIMITERS : \X'tty: link https://docs.python.org/3/library/typing.html#typing.Final'\fI\%Final\fP\X'tty: link'[\X'tty: link https://docs.python.org/3/library/stdtypes.html#dict'\fI\%dict\fP\X'tty: link'[\X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link', \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link']] = \fB{\(aqMotoStatusLogList\(aq: \(aq}\-{\(aq}\fP
+Delimiters used in encoded table strings, keyed by action.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B mb8611.constants.SHARED_HEADERS : \X'tty: link https://docs.python.org/3/library/typing.html#typing.Final'\fI\%Final\fP\X'tty: link'[\X'tty: link https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping'\fI\%Mapping\fP\X'tty: link'[\X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link', \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link']] = \fB{\(aqaccept\(aq: \(aqapplication/json\(aq, \(aqcache\-control\(aq: \(aqno\-cache\(aq, \(aqconnection\(aq: \(aqkeep\-alive\(aq, \(aqcontent\-type\(aq: \(aqapplication/json\(aq, \(aqx\-requested\-with\(aq: \(aqXMLHttpRequest\(aq}\fP
+Common HTTP headers.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B mb8611.constants.TABLE_KEYS = \fB(\(aqMotoConnDownstreamChannel\(aq, \(aqMotoConnUpstreamChannel\(aq, \(aqMotoStatusLogList\(aq)\fP
+Keys that contain specially encoded lists to be displayed in tables.
+.UNINDENT
+.SS Utilities
+.sp
+Utility functions.
+.INDENT 0.0
+.TP
+.B mb8611.utils.make_hnap_auth(\fI\%action\fP: \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link', \fI\%private_key\fP: \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link' = \fB\(aqwithoutloginkey\(aq\fP) -> \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link'
+Create the value required for the \fBHNAP_AUTH\fP header.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B mb8611.utils.make_soap_action_uri(\fI\%action\fP: \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link') -> \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link'
+Return the SOAP action URI for the given action.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B mb8611.utils.parse_table_str(\fI\%table_str\fP: \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link', \fI\%row_delimiter\fP: \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link' = \fB\(aq|+|\(aq\fP) -> \X'tty: link https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator'\fI\%Iterator\fP\X'tty: link'[\X'tty: link https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence'\fI\%Sequence\fP\X'tty: link'[\X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link']]
+Parse a string that represents a table displayed in the UI.
+.UNINDENT
+.SS Typing utilities
+.INDENT 0.0
+.TP
+.B class mb8611.api.ClearLogPayload
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.GetHomeAddressResponse
+Network address information.
+.INDENT 7.0
+.TP
+.B MotoHomeIpAddress : \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link'
+IPv4 address.
+.UNINDENT
+.INDENT 7.0
+.TP
+.B MotoHomeIpv6Address : \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link'
+IPv6 address.
+.UNINDENT
+.INDENT 7.0
+.TP
+.B MotoHomeMacAddress : \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link'
+MAC address.
+.UNINDENT
+.INDENT 7.0
+.TP
+.B MotoHomeSfVer : \X'tty: link https://docs.python.org/3/library/stdtypes.html#str'\fI\%str\fP\X'tty: link'
+Firmware version.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.GetMultipleHNAPsPayload
+Multiple HNAPs payload.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.GetMultipleHNAPsResponse
+Multiple HNAPs response.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.GetNetworkModeSettingsPayload
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.GetNetworkModeSettingsResponse
+Not used in cable\-modem only models.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.LoginPayload
+Login payload.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.LoginResponse
+Login response.
+.INDENT 7.0
+.TP
+.B LoginResponse : _LoginResponseLoginResponse
+Login response.
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.RebootPayload
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.SetMotoLagStatusPayload
+Not used in cable\-modem only models.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.SetMotoLagStatusResponse
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.SetMotoStatusDSTargetFreqPayload
+Not used in cable\-modem only models.
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.SetStatusLogSettingsPayload
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.SetStatusLogSettingsResponse
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class mb8611.api.SetStatusSecuritySettingsPayload
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+\fI\%Index\fP
+.IP \(bu 2
+\fI\%Module Index\fP
+.IP \(bu 2
+\fI\%Search Page\fP
+.UNINDENT
 .SH AUTHOR
 Andrew Udvare <audvare@gmail.com>
 .SH COPYRIGHT
-2023
+2025
 .\" Generated by docutils manpage writer.
 .

@@ -1,5 +1,7 @@
 """Type information for use with the ``GetMultipleHNAPs`` API."""
-from typing import Literal, NotRequired, TypedDict
+from typing import Literal, TypedDict
+
+from typing_extensions import NotRequired
 
 
 class _GetMultipleHNAPsPayloadGetMultipleHNAPs(TypedDict, total=False):
@@ -141,8 +143,9 @@ class _GetMotoStatusSecXXXResponse(XXXResponse, TypedDict):
 
 class _GetMotoStatusSecAccountResponse(TypedDict):
     """
-    All values other than ``GetMotoStatusSecAccountResult`` are AES-128 encrypted. The key is the
-    ``PrivateKey`` assigned at login.
+    All values other than ``GetMotoStatusSecAccountResult`` are AES-128 encrypted.
+
+    The key is the ``PrivateKey`` assigned at login.
     """
     CurrentLogin: str
     CurrentNameAdmin: str

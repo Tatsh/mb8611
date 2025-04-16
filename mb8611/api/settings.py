@@ -1,4 +1,6 @@
-from typing import Any, Literal, NotRequired, TypedDict
+from typing import Any, Literal, TypedDict
+
+from typing_extensions import NotRequired
 
 __all__ = ('GetNetworkModeSettingsPayload', 'GetNetworkModeSettingsResponse',
            'SetMotoLagStatusPayload', 'SetMotoStatusDSTargetFreqPayload',

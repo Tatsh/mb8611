@@ -1,7 +1,6 @@
+from mb8611.client import CallHNAPError, Client, LockedError, LoginFailed
 import pytest
 import requests_mock as req_mock
-
-from mb8611.client import CallHNAPError, Client, LockedError, LoginFailed
 
 HOST = '192.168.12.1'
 

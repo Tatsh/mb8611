@@ -1,16 +1,17 @@
 """Main command."""
-import json
-import warnings
 from typing import Any, Final, Literal, cast
+import json
+import logging
+import warnings
 
-import click
 from urllib3.exceptions import InsecureRequestWarning
+import click
 
 from .api import Action
 from .api.settings import RebootPayload, SetStatusLogSettingsPayload
 from .client import CallHNAPError, Client, LoginFailed
 from .constants import ROW_DELIMITERS, TABLE_KEYS
-from .utils import parse_table_str, setup_logging
+from .utils import parse_table_str
 
 ActionAlias = Literal['addr', 'address', 'clear-log', 'conn', 'connection', 'connection-info',
                       'conninfo', 'down', 'downstream', 'lag', 'lag-status', 'log', 'reboot',
@@ -66,25 +67,27 @@ ACTION_PAYLOAD_MAPPING: Final[dict[ActionAlias, SetStatusLogSettingsPayload | Re
 def main(action: ActionAlias,
          host: str,
          password: str = '',
+         username: str = 'admin',
+         *,
          debug: bool = False,
-         output_json: bool = False,
-         username: str = 'admin') -> None:
-    """Main CLI."""
+         output_json: bool = False) -> None:
+    """Manage a MB8611 series modem."""
     # Unfortunately, we have to ignore certificate warnings as there is no way to install a good
     # certificate on the device.
     warnings.filterwarnings(action='ignore', category=InsecureRequestWarning)
-    setup_logging(debug)
+    logging.basicConfig(level=logging.DEBUG if debug else logging.ERROR)
     try:
         with Client(password, host, username) as client:
             try:
                 response = client.call_hnap(ACTION_ALIAS_MAPPING[action],
-                                            ACTION_PAYLOAD_MAPPING.get(action), not output_json)
+                                            ACTION_PAYLOAD_MAPPING.get(action),
+                                            check=not output_json)
             except CallHNAPError as e:
                 click.echo(str(e), err=True)
                 raise click.Abort from e
             top_key = f'{ACTION_ALIAS_MAPPING[action]}Response'
             result_key = f'{ACTION_ALIAS_MAPPING[action]}Result'
-            res_d = cast(dict[str, Any], response)
+            res_d = cast('dict[str, Any]', response)
             if not output_json:
                 assert res_d[top_key][result_key] == 'OK'
             assert top_key in response

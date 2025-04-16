@@ -1,4 +1,0 @@
-Symb
-Ksym
-Pwr
-dBmV

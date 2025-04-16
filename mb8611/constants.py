@@ -23,5 +23,5 @@ MUST_BE_CALLED_FROM_MULTIPLE: Final[set[MultipleHNAPAction]] = {
     'GetMotoStatusStartupSequence', 'GetMotoStatusUpstreamChannelInfo'
 }
 """Actions that do not work without using GetMultipleHNAPs."""
-ROW_DELIMITERS: Final[dict[str, str]] = dict(MotoStatusLogList='}-{')
+ROW_DELIMITERS: Final[dict[str, str]] = {'MotoStatusLogList': '}-{'}
 """Delimiters used in encoded table strings, keyed by action."""
