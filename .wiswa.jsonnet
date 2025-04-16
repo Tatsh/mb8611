@@ -7,7 +7,7 @@ local utils = import 'utils.libjsonnet';
   description: 'CLI tool for managing the Motorola MB8611 series modem and maybe other Motorola devices.',
   keywords: ['command line'],
   project_name: 'mb8611',
-  version: '0.0.1',
+  version: '0.0.2',
   want_main: true,
   citation+: {
     'date-released': '2025-04-16',

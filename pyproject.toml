@@ -21,7 +21,7 @@ keywords = ["command line"]
 license = "MIT"
 name = "mb8611"
 readme = "README.md"
-version = "0.0.1"
+version = "0.0.2"
 
 [[project.authors]]
 email = "audvare@gmail.com"

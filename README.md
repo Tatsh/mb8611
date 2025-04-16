@@ -7,7 +7,7 @@
 ![PyPI - Version](https://img.shields.io/pypi/v/mb8611)
 ![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Tatsh/mb8611)
 ![GitHub](https://img.shields.io/github/license/Tatsh/mb8611)
-![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/mb8611/v0.0.1/master)
+![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/mb8611/v0.0.2/master)
 
 CLI tool and library for managing the Motorola MB8611 series modem and maybe other Motorola devices.
 
