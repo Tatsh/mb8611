@@ -13,7 +13,7 @@ CLI tool and library for managing the Motorola MB8611 series modem and maybe oth
 
 ## Maintenance notice
 
-This code is not maintained. I do not own this modem anymore nor do I plan on acquiring another.
+This code is not maintained. I do not own this modem any-more nor do I plan on acquiring another.
 
 If you choose to fork this code and want to maintain it long term, please keep my name in the
 authors list. Also, I am happy to relinquish the PyPI package.
